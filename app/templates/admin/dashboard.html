@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}管理后台 - {{ config.BLOG_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">管理菜单</h5>
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="{{ url_for('admin.new_post') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-plus"></i> 新建文章
+                </a>
+                <a href="{{ url_for('admin.new_category') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-folder-plus"></i> 新建分类
+                </a>
+                <a href="{{ url_for('admin.new_tag') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tag"></i> 新建标签
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">文章列表</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>标题</th>
+                                <th>作者</th>
+                                <th>分类</th>
+                                <th>状态</th>
+                                <th>发布时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for post in posts %}
+                            <tr>
+                                <td>
+                                    <a href="{{ url_for('main.post', slug=post.slug) }}" class="text-decoration-none">
+                                        {{ post.title }}
+                                    </a>
+                                </td>
+                                <td>{{ post.author.username }}</td>
+                                <td>
+                                    {% if post.category %}
+                                    <a href="{{ url_for('main.category', slug=post.category.slug) }}" class="text-decoration-none">
+                                        {{ post.category.name }}
+                                    </a>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if post.published %}
+                                    <span class="badge bg-success">已发布</span>
+                                    {% else %}
+                                    <span class="badge bg-warning">草稿</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ post.created_at.strftime('%Y-%m-%d') }}</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{{ url_for('admin.edit_post', id=post.id) }}" class="btn btn-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" 
+                                                data-bs-target="#deleteModal{{ post.id }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+
+                                    <!-- 删除确认模态框 -->
+                                    <div class="modal fade" id="deleteModal{{ post.id }}" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">确认删除</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    确定要删除文章 "{{ post.title }}" 吗？此操作不可恢复。
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                                    <form action="{{ url_for('admin.delete_post', id=post.id) }}" method="post">
+                                                        <button type="submit" class="btn btn-danger">删除</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
