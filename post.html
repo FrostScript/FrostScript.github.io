@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章标题 - 我的博客</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- 引入 Markdown 渲染器 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <a href="/">我的博客</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">首页</a></li>
+                <li><a href="/blog">博客</a></li>
+                <li><a href="/about">关于</a></li>
+                <li><a href="/contact">联系</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <article class="post-detail">
+            <header class="post-header">
+                <h1 class="post-title">文章标题</h1>
+                <div class="post-meta">
+                    <span class="post-date"><i class="far fa-calendar"></i> 2024-03-21</span>
+                    <span class="post-author"><i class="far fa-user"></i> 作者名</span>
+                    <span class="post-category"><i class="far fa-folder"></i> 分类</span>
+                    <div class="post-tags">
+                        <i class="fas fa-tags"></i>
+                        <a href="#" class="tag">标签1</a>
+                        <a href="#" class="tag">标签2</a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="post-content markdown-body">
+                <!-- 文章内容将通过 JavaScript 动态插入 -->
+            </div>
+
+            <footer class="post-footer">
+                <div class="post-share">
+                    <span>分享到：</span>
+                    <a href="#" class="share-link"><i class="fab fa-weixin"></i></a>
+                    <a href="#" class="share-link"><i class="fab fa-weibo"></i></a>
+                    <a href="#" class="share-link"><i class="fab fa-twitter"></i></a>
+                </div>
+
+                <div class="post-navigation">
+                    <a href="#" class="prev-post">
+                        <i class="fas fa-arrow-left"></i>
+                        上一篇：文章标题
+                    </a>
+                    <a href="#" class="next-post">
+                        下一篇：文章标题
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </footer>
+        </article>
+
+        <!-- 评论区 -->
+        <section class="comments-section">
+            <h2>评论</h2>
+            <div id="disqus_thread"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <p>&copy; 2024 我的个人博客. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/post.js"></script>
+</body>
+</html> 

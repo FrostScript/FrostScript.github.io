@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客管理后台</title>
+    <link rel="stylesheet" href="../styles/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- 引入 Markdown 编辑器 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+</head>
+<body>
+    <div class="admin-container">
+        <nav class="admin-sidebar">
+            <div class="admin-logo">
+                <h2>博客管理</h2>
+            </div>
+            <ul class="admin-menu">
+                <li><a href="#" class="active"><i class="fas fa-home"></i> 仪表盘</a></li>
+                <li><a href="#posts"><i class="fas fa-file-alt"></i> 文章管理</a></li>
+                <li><a href="#categories"><i class="fas fa-folder"></i> 分类管理</a></li>
+                <li><a href="#tags"><i class="fas fa-tags"></i> 标签管理</a></li>
+                <li><a href="#comments"><i class="fas fa-comments"></i> 评论管理</a></li>
+                <li><a href="#settings"><i class="fas fa-cog"></i> 系统设置</a></li>
+            </ul>
+        </nav>
+
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="admin-header-left">
+                    <button id="sidebar-toggle"><i class="fas fa-bars"></i></button>
+                    <h1>仪表盘</h1>
+                </div>
+                <div class="admin-header-right">
+                    <div class="admin-user">
+                        <img src="https://via.placeholder.com/40" alt="用户头像">
+                        <span>管理员</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <!-- 文章编辑表单 -->
+                <div class="post-editor" id="post-editor">
+                    <form id="post-form">
+                        <div class="form-group">
+                            <label for="post-title">文章标题</label>
+                            <input type="text" id="post-title" name="title" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="post-category">分类</label>
+                            <select id="post-category" name="category">
+                                <option value="">选择分类</option>
+                                <option value="tech">技术</option>
+                                <option value="life">生活</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="post-tags">标签</label>
+                            <input type="text" id="post-tags" name="tags" placeholder="用逗号分隔多个标签">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="post-content">文章内容</label>
+                            <textarea id="post-content" name="content"></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn-draft">保存草稿</button>
+                            <button type="submit" class="btn-publish">发布文章</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 文章列表 -->
+                <div class="post-list" id="post-list">
+                    <div class="post-filters">
+                        <input type="text" placeholder="搜索文章...">
+                        <select>
+                            <option value="">所有分类</option>
+                            <option value="tech">技术</option>
+                            <option value="life">生活</option>
+                            <option value="other">其他</option>
+                        </select>
+                    </div>
+
+                    <table class="post-table">
+                        <thead>
+                            <tr>
+                                <th>标题</th>
+                                <th>分类</th>
+                                <th>标签</th>
+                                <th>发布时间</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>示例文章</td>
+                                <td>技术</td>
+                                <td>JavaScript, Vue</td>
+                                <td>2024-03-21</td>
+                                <td>已发布</td>
+                                <td>
+                                    <button class="btn-edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/admin.js"></script>
+</body>
+</html> 
