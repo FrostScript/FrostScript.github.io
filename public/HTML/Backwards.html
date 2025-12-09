@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>反向传播 & 梯度下降（儿童可视化示例）</title>
+  <style>
+    body{font-family: "Microsoft YaHei", Arial; background:#f7fbff; color:#123; padding:18px}
+    h1{font-size:20px}
+    .row{display:flex; gap:18px; align-items:flex-start}
+    .box{background:#fff; border-radius:10px; padding:12px; box-shadow:0 6px 18px rgba(20,60,90,0.06);}
+    .left{flex:0 0 420px}
+    .right{flex:1}
+    .control{display:flex; flex-direction:column; gap:8px}
+    label{font-size:13px}
+    input[type=range]{width:100%}
+    .network{display:flex; gap:18px; align-items:center; justify-content:center; padding:18px}
+    .node{width:80px; height:80px; border-radius:50%; background:linear-gradient(180deg,#e6f2ff,#cfe9ff); display:flex; align-items:center; justify-content:center; font-weight:700; box-shadow:0 6px 10px rgba(10,60,110,0.06); position:relative}
+    .arrow{font-size:24px}
+    .vars{margin-top:10px; display:flex; gap:8px; flex-wrap:wrap}
+    .var{background:#f0f7ff; padding:6px 8px; border-radius:8px; cursor:default}
+    .formula{margin-top:12px; padding:10px; background:#fcfdf9; border-radius:8px}
+    .btn{padding:8px 12px; border-radius:8px; border:0; background:#2b77ff; color:#fff; cursor:pointer}
+    .btn.secondary{background:#6c6c6c}
+    .highlight{background:linear-gradient(90deg,#fff7c2,#ffe3a3); padding:4px 6px; border-radius:6px}
+    .tooltip{position:fixed; pointer-events:none; background:rgba(0,0,0,0.8); color:#fff; padding:8px 10px; border-radius:6px; font-size:13px; max-width:260px}
+    .step-list{display:flex; flex-direction:column; gap:8px}
+    .step{padding:8px; border-radius:8px; background:#fbfdff; border:1px solid #e6f2ff}
+    .step.active{border-color:#ffd27a; box-shadow:0 6px 18px rgba(255,190,60,0.12)}
+    .small{font-size:12px; color:#666}
+    .value{font-weight:700}
+    footer{margin-top:12px; font-size:12px; color:#666}
+  </style>
+</head>
+<body>
+  <h1>反向传播 + 梯度下降（儿童可视化，鼠标移到元素上看解释）</h1>
+  <div class="row">
+    <div class="box left">
+      <div class="control">
+        <label>输入 x: <span id="xVal" class="value">1.0</span></label>
+        <input id="x" type="range" min="-2" max="2" step="0.1" value="1">
+
+        <label>目标 t（正确答案）: <span id="tVal" class="value">2.0</span></label>
+        <input id="t" type="range" min="-2" max="4" step="0.1" value="2">
+
+        <label>权重 w: <span id="wVal" class="value">0.5</span></label>
+        <input id="w" type="range" min="-2" max="2" step="0.01" value="0.5">
+
+        <label>偏置 b: <span id="bVal" class="value">0.0</span></label>
+        <input id="b" type="range" min="-2" max="2" step="0.01" value="0">
+
+        <label>学习率 lr: <span id="lrVal" class="value">0.1</span></label>
+        <input id="lr" type="range" min="0.01" max="0.5" step="0.01" value="0.1">
+
+        <div style="display:flex; gap:8px; margin-top:6px">
+          <button id="stepBtn" class="btn">执行一步（前向→反向→更新）</button>
+          <button id="runBtn" class="btn secondary">自动跑 10 步</button>
+          <button id="resetBtn" class="btn secondary">重置</button>
+        </div>
+
+        <div class="vars" style="margin-top:8px">
+          <div class="var" data-tip="x：网络的输入（我们给的数）" id="tip-x">x = 1.0</div>
+          <div class="var" data-tip="w：权重，网络要学会调整它" id="tip-w">w = 0.5</div>
+          <div class="var" data-tip="b：偏置，网络学会的另一个数" id="tip-b">b = 0.0</div>
+          <div class="var" data-tip="y：模型的输出，y = w*x + b" id="tip-y">y = 0.5</div>
+          <div class="var" data-tip="t：目标值（正确答案）" id="tip-t">t = 2.0</div>
+          <div class="var" data-tip="Loss：损失，表示和正确答案的差别，越小越好" id="tip-loss">Loss = 2.25</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box right">
+      <div style="display:flex; gap:12px; align-items:flex-start">
+        <div style="flex:1">
+          <div class="network">
+            <div class="node" title="输入 x（你给的数）" id="node-x">x<br><span class="small" id="node-x-val">1.0</span></div>
+            <div class="arrow">→</div>
+            <div class="node" title="线性层：y = w*x + b" id="node-y">y<br><span class="small" id="node-y-val">0.5</span></div>
+            <div class="arrow">→</div>
+            <div class="node" title="损失：Loss = (y - t)^2" id="node-loss">Loss<br><span class="small" id="node-loss-val">2.25</span></div>
+          </div>
+
+          <div class="formula" id="formulaBox">
+            <div><strong>前向传播（算输出）：</strong></div>
+            <div id="fwd">y = <span class="highlight var-term" data-tip="w：权重">w</span> * <span class="highlight var-term" data-tip="x：输入">x</span> + <span class="highlight var-term" data-tip="b：偏置">b</span>
+            &nbsp;&nbsp;&nbsp;→ y = <span id="fwd-y">0.5</span></div>
+
+            <div style="margin-top:8px"><strong>计算损失（越小越好）：</strong></div>
+            <div id="lossLine">Loss = (y - t)^2 &nbsp;&nbsp;→ Loss = <span id="lossVal">2.25</span></div>
+
+            <hr style="margin:10px 0">
+
+            <div><strong>反向传播（求梯度）—— 用链式法则很简单：</strong></div>
+            <div class="small">先算损失对 y 的导数：</div>
+            <div id="dLdyLine">dL/dy = 2 * (y - t) &nbsp;&nbsp;→ <span id="dLdy">-1.5</span></div>
+            <div class="small">再算损失对 w 和 b：</div>
+            <div id="dLdWLine">dL/dw = dL/dy * x &nbsp;&nbsp;→ <span id="dLdW">-1.5</span></div>
+            <div id="dLdBLine">dL/db = dL/dy * 1 &nbsp;&nbsp;→ <span id="dLdB">-1.5</span></div>
+
+            <hr style="margin:10px 0">
+            <div><strong>梯度下降（更新参数）：</strong></div>
+            <div id="updateLine">w = w - lr * dL/dw &nbsp; &nbsp; b = b - lr * dL/db</div>
+            <div class="small">例如：学习率 lr = <span id="lrShow">0.1</span></div>
+            <div style="margin-top:6px">更新后： w = <span id="newW">0.65</span> ， b = <span id="newB">0.15</span></div>
+
+          </div>
+        </div>
+
+        <div style="width:260px">
+          <div><strong>步骤（鼠标移到步骤上查看公式和变量）</strong></div>
+          <div class="step-list">
+            <div class="step" id="step1">1. 前向：计算 y = w*x + b</div>
+            <div class="step" id="step2">2. 算损失：Loss = (y - t)^2</div>
+            <div class="step" id="step3">3. 反向：dL/dy = 2(y - t) ; dL/dw = dL/dy * x ; dL/db = dL/dy</div>
+            <div class="step" id="step4">4. 更新：w -= lr * dL/dw ; b -= lr * dL/db</div>
+          </div>
+
+          <div style="margin-top:12px">
+            <div><strong>小词语表（鼠标移上看解释）</strong></div>
+            <div class="small" style="margin-top:6px">
+              <div class="var" data-tip="损失：预测和正确答案差的平方，越小越好">Loss（损失）</div>
+              <div class="var" data-tip="梯度：告诉我们该把参数改多少，方向和大小都在里面">Gradient（梯度）</div>
+              <div class="var" data-tip="学习率：每次改变参数的步子大小，不能太大也不能太小">lr（学习率）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>提示：把鼠标移到黄色高亮或变量上，会显示更详细的解释（适合一年级小学生的语言）。</footer>
+    </div>
+  </div>
+
+  <div id="tooltip" class="tooltip" style="display:none"></div>
+
+  <script>
+    // DOM refs
+    const xSlider = document.getElementById('x');
+    const tSlider = document.getElementById('t');
+    const wSlider = document.getElementById('w');
+    const bSlider = document.getElementById('b');
+    const lrSlider = document.getElementById('lr');
+
+    const xVal = document.getElementById('xVal');
+    const tVal = document.getElementById('tVal');
+    const wVal = document.getElementById('wVal');
+    const bVal = document.getElementById('bVal');
+    const lrVal = document.getElementById('lrVal');
+
+    const nodeXVal = document.getElementById('node-x-val');
+    const nodeYVal = document.getElementById('node-y-val');
+    const nodeLossVal = document.getElementById('node-loss-val');
+
+    const fwdY = document.getElementById('fwd-y');
+    const lossVal = document.getElementById('lossVal');
+    const dLdy = document.getElementById('dLdy');
+    const dLdW = document.getElementById('dLdW');
+    const dLdB = document.getElementById('dLdB');
+    const newW = document.getElementById('newW');
+    const newB = document.getElementById('newB');
+    const lrShow = document.getElementById('lrShow');
+
+    const tipElems = document.querySelectorAll('[data-tip]');
+    const tooltip = document.getElementById('tooltip');
+
+    function round(v){return Math.round(v*100)/100}
+
+    // initial values
+    let x = Number(xSlider.value);
+    let t = Number(tSlider.value);
+    let w = Number(wSlider.value);
+    let b = Number(bSlider.value);
+    let lr = Number(lrSlider.value);
+
+    function compute() {
+      const y = w * x + b;
+      const loss = (y - t) * (y - t);
+      const grad_y = 2 * (y - t);
+      const grad_w = grad_y * x;
+      const grad_b = grad_y * 1;
+      return {y, loss, grad_y, grad_w, grad_b};
+    }
+
+    function renderValues(){
+      xVal.textContent = round(x);
+      tVal.textContent = round(t);
+      wVal.textContent = round(w);
+      bVal.textContent = round(b);
+      lrVal.textContent = round(lr);
+
+      const {y, loss, grad_y, grad_w, grad_b} = compute();
+      nodeXVal.textContent = round(x);
+      nodeYVal.textContent = round(y);
+      nodeLossVal.textContent = round(loss);
+
+      fwdY.textContent = round(y);
+      lossVal.textContent = round(loss);
+      dLdy.textContent = round(grad_y);
+      dLdW.textContent = round(grad_w);
+      dLdB.textContent = round(grad_b);
+      lrShow.textContent = lr;
+
+      newW.textContent = round(w - lr * grad_w);
+      newB.textContent = round(b - lr * grad_b);
+
+      // small variable boxes
+      document.getElementById('tip-x').textContent = 'x = ' + round(x);
+      document.getElementById('tip-w').textContent = 'w = ' + round(w);
+      document.getElementById('tip-b').textContent = 'b = ' + round(b);
+      document.getElementById('tip-y').textContent = 'y = ' + round(y);
+      document.getElementById('tip-t').textContent = 't = ' + round(t);
+      document.getElementById('tip-loss').textContent = 'Loss = ' + round(loss);
+    }
+
+    // sliders
+    xSlider.addEventListener('input', ()=>{ x = Number(xSlider.value); renderValues(); });
+    tSlider.addEventListener('input', ()=>{ t = Number(tSlider.value); renderValues(); });
+    wSlider.addEventListener('input', ()=>{ w = Number(wSlider.value); renderValues(); });
+    bSlider.addEventListener('input', ()=>{ b = Number(bSlider.value); renderValues(); });
+    lrSlider.addEventListener('input', ()=>{ lr = Number(lrSlider.value); renderValues(); });
+
+    // step button
+    const stepBtn = document.getElementById('stepBtn');
+    const runBtn = document.getElementById('runBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    let running = false;
+
+    stepBtn.addEventListener('click', ()=>{ oneStep(); });
+
+    runBtn.addEventListener('click', async ()=>{
+      if(running) return; running = true; runBtn.textContent='运行中...';
+      for(let i=0;i<10;i++){
+        await sleep(250);
+        oneStep();
+      }
+      running=false; runBtn.textContent='自动跑 10 步';
+    });
+
+    resetBtn.addEventListener('click', ()=>{
+      x = 1; t = 2; w = 0.5; b = 0; lr = 0.1;
+      xSlider.value = x; tSlider.value = t; wSlider.value = w; bSlider.value = b; lrSlider.value = lr;
+      renderValues();
+    });
+
+    function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+    function flashStep(id){
+      const el = document.getElementById(id);
+      el.classList.add('active');
+      setTimeout(()=>el.classList.remove('active'),300);
+    }
+
+    function oneStep(){
+      // 1 forward
+      flashStep('step1');
+      const {y, loss, grad_y, grad_w, grad_b} = compute();
+      // show forward briefly
+      renderValues();
+
+      // 2 loss
+      flashStep('step2');
+      // 3 backward
+      flashStep('step3');
+      // 4 update
+      flashStep('step4');
+      w = w - lr * grad_w;
+      b = b - lr * grad_b;
+      // update sliders and render
+      wSlider.value = w; bSlider.value = b;
+      renderValues();
+    }
+
+    // tooltip handling
+    document.addEventListener('mousemove',(e)=>{
+      // leave empty; show on hover
+    });
+
+    tipElems.forEach(el=>{
+      el.addEventListener('mouseenter',(ev)=>{
+        const t = el.getAttribute('data-tip');
+        tooltip.style.display='block';
+        tooltip.textContent = t;
+      });
+      el.addEventListener('mouseleave',()=>{ tooltip.style.display='none'; });
+      el.addEventListener('mousemove',(ev)=>{
+        const x = ev.clientX + 12; const y = ev.clientY + 12;
+        tooltip.style.left = x + 'px'; tooltip.style.top = y + 'px';
+      });
+    });
+
+    // also allow hovering on highlighted formula parts
+    document.querySelectorAll('.var-term').forEach(el=>{
+      el.addEventListener('mouseenter',()=>{
+        const t = el.getAttribute('data-tip') || '变量';
+        tooltip.style.display='block'; tooltip.textContent = t;
+      });
+      el.addEventListener('mouseleave',()=>{ tooltip.style.display='none'; });
+      el.addEventListener('mousemove',(ev)=>{ tooltip.style.left = (ev.clientX+12)+'px'; tooltip.style.top=(ev.clientY+12)+'px'; });
+    });
+
+    // initial render
+    renderValues();
+  </script>
+</body>
+</html>

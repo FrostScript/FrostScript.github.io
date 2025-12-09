@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
   
-  <meta name="robots" content="noindex,follow">
+  
   <meta name="generator" content="Hexo 7.3.0">
   <meta http-equiv='x-dns-prefetch-control' content='on' />
   
@@ -17,15 +17,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
-  <title>标签：静态博客 - Frost's Blog</title>
+  <title>Pytorch Basic - Frost's Blog</title>
 
   
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Frost&#39;s Blog">
-<meta property="og:url" content="http://frostscript.github.io/tags/%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/">
+    <meta name="description" content="PyTorch 基础知识欢迎来到 PyTorch 基础教程！在这个系列中，我们将从基础概念开始学习 PyTorch，逐步深入到高级应用。 反向传播与梯度下降理解神经网络的核心概念对于掌握 PyTorch 至关重要。其中最重要的概念之一就是反向传播（Backpropagation）和梯度下降（Gradient Descent）。 为了帮助您更好地理解这些概念，我们准备了一个交互式的可视化演示，展示了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pytorch Basic">
+<meta property="og:url" content="http://frostscript.github.io/2025/12/09/Pytorch-Basic/">
 <meta property="og:site_name" content="Frost&#39;s Blog">
+<meta property="og:description" content="PyTorch 基础知识欢迎来到 PyTorch 基础教程！在这个系列中，我们将从基础概念开始学习 PyTorch，逐步深入到高级应用。 反向传播与梯度下降理解神经网络的核心概念对于掌握 PyTorch 至关重要。其中最重要的概念之一就是反向传播（Backpropagation）和梯度下降（Gradient Descent）。 为了帮助您更好地理解这些概念，我们准备了一个交互式的可视化演示，展示了">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://frostscript.github.io/source/1763695201845.jpg">
+<meta property="article:published_time" content="2025-12-09T04:58:24.000Z">
+<meta property="article:modified_time" content="2025-12-09T05:01:48.000Z">
 <meta property="article:author" content="Frost">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://frostscript.github.io/source/1763695201845.jpg">
@@ -44,12 +48,12 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"http://FrostScript.github.io","author":{"@type":"Person","name":"Frost","sameAs":[],"image":"/source/1763695201845.jpg"},"name":"Frost's Blog","description":"","url":"http://FrostScript.github.io"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Frost","sameAs":[],"image":"/source/1763695201845.jpg"},"dateCreated":"2025-12-09T12:58:24+08:00","dateModified":"2025-12-09T13:01:48+08:00","datePublished":"2025-12-09T12:58:24+08:00","description":"","headline":"Pytorch Basic","mainEntityOfPage":{"@type":"WebPage","@id":"http://frostscript.github.io/2025/12/09/Pytorch-Basic/"},"publisher":{"@type":"Organization","name":"Frost","sameAs":[],"image":"/source/1763695201845.jpg","logo":{"@type":"ImageObject","url":"/source/1763695201845.jpg"}},"url":"http://frostscript.github.io/2025/12/09/Pytorch-Basic/","image":[]}</script>
   
 </head>
 <body>
 
-<div class="l_body index" id="start" layout="undefined" type="undefined" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+<div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
 
 
 <header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/source/1763695201845.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Frost's Blog</div></a></div></header>
@@ -61,31 +65,74 @@
 <div class="widgets">
 <div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
 
+
+
 <widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2025/12/09/Pytorch-Basic/"><span class="title">Pytorch Basic</span></a><a class="item title" href="/2025/11/20/english-grammar-core-points/"><span class="title">英语写作与语法核心要点</span></a><a class="item title" href="/2025/11/20/hexo-usage-guide/"><span class="title">Hexo 使用完整指南</span></a><a class="item title" href="/2025/11/23/IELTS-Plan/"><span class="title">IELTS Plan</span></a></div></widget>
 </div>
 
 </div></aside><div class="l_main" id="main">
 
-<header class="header mobile-only"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/source/1763695201845.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Frost's Blog</div></a></div></header>
-
- 
 
 
 
 
-<div class="navbar top"><div class="navbar-blur"><div class="navbar-container"><nav class="post"><a href="/">近期发布</a><a href="/categories/">分类</a><a class="active" href="/tags/">标签：静态博客</a><a href="/archives/">归档</a></nav></div></div></div>
-<div class="post-list post"><a class="post-card post" href="/2025/11/20/hexo-usage-guide/">
-<article class="md-text"><h2 class="post-title">Hexo 使用完整指南</h2><div class="excerpt"><p>Hexo 使用完整指南Hexo 是一个快速、简洁且高效的博客框架，它基于 Node.js 开发，能够帮助你轻松地创建个人博客网站。本文将带你从零开始搭建和使用 Hexo 博客。
-一、环境准备在开始使用 Hexo 之前，需要先安装以下软件：
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-12-09T04:58:24.000Z">2025-12-09</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2025-12-09T05:01:48.000Z">2025-12-09</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Pytorch Basic</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h1 id="PyTorch-基础知识"><a href="#PyTorch-基础知识" class="headerlink" title="PyTorch 基础知识"></a>PyTorch 基础知识</h1><p>欢迎来到 PyTorch 基础教程！在这个系列中，我们将从基础概念开始学习 PyTorch，逐步深入到高级应用。</p>
+<h2 id="反向传播与梯度下降"><a href="#反向传播与梯度下降" class="headerlink" title="反向传播与梯度下降"></a>反向传播与梯度下降</h2><p>理解神经网络的核心概念对于掌握 PyTorch 至关重要。其中最重要的概念之一就是<strong>反向传播</strong>（Backpropagation）和<strong>梯度下降</strong>（Gradient Descent）。</p>
+<p>为了帮助您更好地理解这些概念，我们准备了一个交互式的可视化演示，展示了神经网络如何通过前向传播、计算损失、反向传播和参数更新的过程：</p>
+<p><a href="/HTML/Backwards.html">👉 查看反向传播可视化演示</a></p>
+<p>这个演示包含以下要点：</p>
+<ul>
+<li>输入数据 x 和目标值 t</li>
+<li>权重 w 和偏置 b 参数</li>
+<li>前向传播过程：y &#x3D; w*x + b</li>
+<li>损失函数计算：Loss &#x3D; (y - t)²</li>
+<li>反向传播计算梯度：使用链式法则计算 dL&#x2F;dw 和 dL&#x2F;db</li>
+<li>参数更新：使用梯度下降法更新权重和偏置</li>
+</ul>
+<p>您可以拖动滑块调整参数，观察网络的学习过程。页面还提供了详细的步骤说明和术语解释，即使是初学者也能轻松理解。</p>
+<p>继续阅读本文档以了解更多 PyTorch 的基础知识…</p>
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
 
-Node...</p></div><div class="meta cap"><span class="cap" id="post-meta"><svg style="margin-bottom:2px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 2c.416 0 .753.324.753.724v1.46c.668-.012 1.417-.012 2.26-.012h4.015c.842 0 1.591 0 2.259.013v-1.46c0-.4.337-.725.753-.725s.753.324.753.724V4.25c1.445.111 2.394.384 3.09 1.055c.698.67.982 1.582 1.097 2.972L22 9H2v-.724c.116-1.39.4-2.302 1.097-2.972c.697-.67 1.645-.944 3.09-1.055V2.724c0-.4.337-.724.753-.724"/><path fill="currentColor" d="M22 14v-2c0-.839-.004-2.335-.017-3H2.01c-.013.665-.01 2.161-.01 3v2c0 3.771 0 5.657 1.172 6.828C4.343 22 6.228 22 10 22h4c3.77 0 5.656 0 6.828-1.172C22 19.658 22 17.772 22 14" opacity=".5"/><path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><time datetime="2025-11-20T08:00:00.000Z">2025-11-20</time></span><span class="cap breadcrumb"><svg style="margin-bottom:1px" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M2 6.95c0-.883 0-1.324.07-1.692A4 4 0 0 1 5.257 2.07C5.626 2 6.068 2 6.95 2c.386 0 .58 0 .766.017a4 4 0 0 1 2.18.904c.144.119.28.255.554.529L11 4c.816.816 1.224 1.224 1.712 1.495a4 4 0 0 0 .848.352C14.098 6 14.675 6 15.828 6h.374c2.632 0 3.949 0 4.804.77c.079.07.154.145.224.224c.77.855.77 2.172.77 4.804V14c0 3.771 0 5.657-1.172 6.828C19.657 22 17.771 22 14 22h-4c-3.771 0-5.657 0-6.828-1.172C2 19.657 2 17.771 2 14z" opacity=".5"/><path fill="currentColor" d="M20 6.238c0-.298-.005-.475-.025-.63a3 3 0 0 0-2.583-2.582C17.197 3 16.965 3 16.5 3H9.988c.116.104.247.234.462.45L11 4c.816.816 1.224 1.224 1.712 1.495a4 4 0 0 0 .849.352C14.098 6 14.675 6 15.829 6h.373c1.78 0 2.957 0 3.798.238"/><path fill="currentColor" fill-rule="evenodd" d="M12.25 10a.75.75 0 0 1 .75-.75h5a.75.75 0 0 1 0 1.5h-5a.75.75 0 0 1-.75-.75" clip-rule="evenodd"/></svg><span>技术教程</span></span></div></article>
-</a></div>
+</div>
+
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2025/11/23/IELTS-Plan/">IELTS Plan</a></div></section></div>
+
+
+
+
 
 
 <footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">Frost</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
 </div></footer>
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
-</aside><div class='float-panel'>
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PyTorch-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-text">PyTorch 基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E4%B8%8E%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D"><span class="toc-text">反向传播与梯度下降</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
   </button>
