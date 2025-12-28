@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>无重复字符的最长子串 - 算法演示</title>
+  <style>
+    body{font-family: "Microsoft YaHei", Arial; background:#f7fbff; color:#123; padding:18px}
+    h1{font-size:20px}
+    .row{display:flex; gap:18px; align-items:flex-start}
+    .box{background:#fff; border-radius:10px; padding:12px; box-shadow:0 6px 18px rgba(20,60,90,0.06);}
+    .left{flex:0 0 420px}
+    .right{flex:1}
+    .control{display:flex; flex-direction:column; gap:8px}
+    label{font-size:13px}
+    input[type=text]{width:100%; padding:6px; border:1px solid #ddd; border-radius:4px}
+    input[type=range]{width:100%}
+    .btn{padding:8px 12px; border-radius:8px; border:0; background:#2b77ff; color:#fff; cursor:pointer; margin-right:6px; margin-bottom:6px}
+    .btn.secondary{background:#6c6c6c}
+    .highlight{background:linear-gradient(90deg,#fff7c2,#ffe3a3); padding:4px 6px; border-radius:6px}
+    .tooltip{position:fixed; pointer-events:none; background:rgba(0,0,0,0.8); color:#fff; padding:8px 10px; border-radius:6px; font-size:13px; max-width:260px}
+    .step-list{display:flex; flex-direction:column; gap:8px}
+    .step{padding:8px; border-radius:8px; background:#fbfdff; border:1px solid #e6f2ff}
+    .step.active{border-color:#ffd27a; box-shadow:0 6px 18px rgba(255,190,60,0.12)}
+    .small{font-size:12px; color:#666}
+    .value{font-weight:700}
+    footer{margin-top:12px; font-size:12px; color:#666}
+    .char-box{display:inline-block; width:30px; height:30px; line-height:30px; text-align:center; margin:2px; border:1px solid #ccc; border-radius:4px; background:white}
+    .char-active{background:#2b77ff; color:white}
+    .char-in-temp{background:#e6f2ff}
+    .char-duplicate{background:#ffcccc}
+    .temp-display{margin:10px 0; padding:10px; background:#f8f9fa; border-radius:6px; font-family:monospace}
+    .result-display{font-size:18px; font-weight:bold; margin:10px 0}
+    .explanation{margin-top:15px; padding:10px; background:#f0f7ff; border-radius:6px}
+  </style>
+</head>
+<body>
+  <h1>无重复字符的最长子串 - 算法演示</h1>
+  <div class="row">
+    <div class="box left">
+      <div class="control">
+        <label>输入字符串:</label>
+        <input id="inputStr" type="text" value="abcabcbb" placeholder="输入字符串">
+        
+        <div style="display:flex; gap:8px; margin-top:6px">
+          <button id="stepBtn" class="btn">单步执行</button>
+          <button id="runBtn" class="btn secondary">自动运行</button>
+          <button id="resetBtn" class="btn secondary">重置</button>
+        </div>
+
+        <div class="explanation">
+          <div><strong>当前状态:</strong></div>
+          <div>当前子串: <span id="tempDisplay" class="highlight">""</span></div>
+          <div>当前长度: <span id="tempLen" class="highlight">0</span></div>
+          <div>最大长度: <span id="maxLen" class="highlight">0</span></div>
+          <div>当前字符: <span id="currentChar" class="highlight">-</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box right">
+      <div style="display:flex; flex-direction:column">
+        <div>
+          <div><strong>字符串可视化:</strong></div>
+          <div id="stringVisualization" style="margin:10px 0; padding:10px; background:#f8f9fa; border-radius:6px"></div>
+        </div>
+
+        <div class="explanation">
+          <div><strong>算法步骤:</strong></div>
+          <div id="algorithmSteps" style="margin-top:10px">
+            1. 初始化temp为空字符串，temp_ans和ans为0<br>
+            2. 遍历字符串中的每个字符<br>
+            3. 如果字符不在temp中，添加到temp并增加长度<br>
+            4. 如果字符在temp中，从重复字符后一位开始截取temp<br>
+            5. 更新最大长度
+          </div>
+        </div>
+
+        <div class="explanation" style="margin-top:10px">
+          <div><strong>当前操作:</strong></div>
+          <div id="currentOperation">等待输入...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tooltip" class="tooltip" style="display:none"></div>
+
+  <script>
+    // DOM references
+    const inputStr = document.getElementById('inputStr');
+    const stepBtn = document.getElementById('stepBtn');
+    const runBtn = document.getElementById('runBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const tempDisplay = document.getElementById('tempDisplay');
+    const tempLen = document.getElementById('tempLen');
+    const maxLen = document.getElementById('maxLen');
+    const currentChar = document.getElementById('currentChar');
+    const stringVisualization = document.getElementById('stringVisualization');
+    const currentOperation = document.getElementById('currentOperation');
+    const tooltip = document.getElementById('tooltip');
+
+    // Algorithm state
+    let s = "abcabcbb";
+    let temp = "";
+    let temp_ans = 0;
+    let ans = 0;
+    let currentIndex = 0;
+    let algorithmState = "ready"; // ready, running, paused
+    let intervalId = null;
+
+    function renderString() {
+      stringVisualization.innerHTML = '';
+      for (let i = 0; i < s.length; i++) {
+        const charBox = document.createElement('span');
+        charBox.className = 'char-box';
+        charBox.textContent = s[i];
+        
+        if (i === currentIndex) {
+          charBox.classList.add('char-active');
+        } else if (temp.includes(s[i]) && i < currentIndex) {
+          charBox.classList.add('char-in-temp');
+        }
+        
+        stringVisualization.appendChild(charBox);
+      }
+    }
+
+    function updateDisplay() {
+      tempDisplay.textContent = `"${temp}"`;
+      tempLen.textContent = temp_ans;
+      maxLen.textContent = ans;
+      currentChar.textContent = currentIndex < s.length ? s[currentIndex] : '-';
+      renderString();
+    }
+
+    function resetAlgorithm() {
+      s = inputStr.value || "abcabcbb";
+      temp = "";
+      temp_ans = 0;
+      ans = 0;
+      currentIndex = 0;
+      algorithmState = "ready";
+      currentOperation.textContent = "算法已重置，等待执行...";
+      updateDisplay();
+      
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+    }
+
+    function stepAlgorithm() {
+      if (currentIndex >= s.length) {
+        currentOperation.textContent = "算法已完成！最长子串长度为: " + ans;
+        return false;
+      }
+
+      const currentCharValue = s[currentIndex];
+      
+      if (!temp.includes(currentCharValue)) {
+        // Character not in temp, add it
+        temp += currentCharValue;
+        temp_ans += 1;
+        currentOperation.textContent = `字符 '${currentCharValue}' 不在当前子串 "${temp.slice(0, -1)}" 中，将其添加。当前子串: "${temp}"`;
+      } else {
+        // Character is duplicate, adjust window
+        const dupIndex = temp.indexOf(currentCharValue);
+        temp = temp.slice(dupIndex + 1) + currentCharValue;
+        temp_ans = temp.length;
+        currentOperation.textContent = `字符 '${currentCharValue}' 在当前子串中重复，从重复字符后一位截取并添加当前字符。新子串: "${temp}"`;
+      }
+      
+      ans = Math.max(ans, temp_ans);
+      currentIndex++;
+      updateDisplay();
+      
+      return currentIndex < s.length;
+    }
+
+    // Event listeners
+    inputStr.addEventListener('change', resetAlgorithm);
+    inputStr.addEventListener('input', resetAlgorithm);
+    
+    stepBtn.addEventListener('click', () => {
+      if (algorithmState === "ready" || algorithmState === "paused") {
+        stepAlgorithm();
+      }
+    });
+
+    runBtn.addEventListener('click', () => {
+      if (algorithmState === "running") {
+        // Stop running
+        algorithmState = "paused";
+        runBtn.textContent = "自动运行";
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = null;
+        }
+      } else {
+        // Start running
+        algorithmState = "running";
+        runBtn.textContent = "停止运行";
+        
+        intervalId = setInterval(() => {
+          const shouldContinue = stepAlgorithm();
+          if (!shouldContinue) {
+            algorithmState = "ready";
+            runBtn.textContent = "自动运行";
+            clearInterval(intervalId);
+            intervalId = null;
+          }
+        }, 1000);
+      }
+    });
+
+    resetBtn.addEventListener('click', resetAlgorithm);
+
+    // Initialize
+    resetAlgorithm();
+  </script>
+</body>
+</html>

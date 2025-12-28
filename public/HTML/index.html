@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML Pages Index</title>
+  <style>
+    body {
+      font-family: "Microsoft YaHei", Arial, sans-serif;
+      background-color: #f7fbff;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #123;
+      border-bottom: 2px solid #2b77ff;
+      padding-bottom: 10px;
+    }
+    .page-list {
+      list-style: none;
+      padding: 0;
+    }
+    .page-item {
+      background: white;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .page-link {
+      text-decoration: none;
+      color: #2b77ff;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .page-link:hover {
+      text-decoration: underline;
+    }
+    .page-desc {
+      margin-top: 5px;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>HTML Pages Index</h1>
+    <ul class="page-list">
+      <li class="page-item">
+        <a href="Backwards.html" class="page-link">Backwards.html</a>
+        <div class="page-desc">反向传播 & 梯度下降（儿童可视化示例）</div>
+      </li>
+      <li class="page-item">
+        <a href="algorithm_demos/" class="page-link">algorithm_demos/</a>
+        <div class="page-desc">算法演示页面</div>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

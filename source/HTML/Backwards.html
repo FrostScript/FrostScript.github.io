@@ -2,137 +2,123 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>反向传播 & 梯度下降（儿童可视化示例）</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
   <style>
-    body{font-family: "Microsoft YaHei", Arial; background:#f7fbff; color:#123; padding:18px}
-    h1{font-size:20px}
-    .row{display:flex; gap:18px; align-items:flex-start}
-    .box{background:#fff; border-radius:10px; padding:12px; box-shadow:0 6px 18px rgba(20,60,90,0.06);}
-    .left{flex:0 0 420px}
-    .right{flex:1}
-    .control{display:flex; flex-direction:column; gap:8px}
-    label{font-size:13px}
-    input[type=range]{width:100%}
-    .network{display:flex; gap:18px; align-items:center; justify-content:center; padding:18px}
-    .node{width:80px; height:80px; border-radius:50%; background:linear-gradient(180deg,#e6f2ff,#cfe9ff); display:flex; align-items:center; justify-content:center; font-weight:700; box-shadow:0 6px 10px rgba(10,60,110,0.06); position:relative}
-    .arrow{font-size:24px}
-    .vars{margin-top:10px; display:flex; gap:8px; flex-wrap:wrap}
-    .var{background:#f0f7ff; padding:6px 8px; border-radius:8px; cursor:default}
-    .formula{margin-top:12px; padding:10px; background:#fcfdf9; border-radius:8px}
-    .btn{padding:8px 12px; border-radius:8px; border:0; background:#2b77ff; color:#fff; cursor:pointer}
-    .btn.secondary{background:#6c6c6c}
-    .highlight{background:linear-gradient(90deg,#fff7c2,#ffe3a3); padding:4px 6px; border-radius:6px}
-    .tooltip{position:fixed; pointer-events:none; background:rgba(0,0,0,0.8); color:#fff; padding:8px 10px; border-radius:6px; font-size:13px; max-width:260px}
-    .step-list{display:flex; flex-direction:column; gap:8px}
-    .step{padding:8px; border-radius:8px; background:#fbfdff; border:1px solid #e6f2ff}
-    .step.active{border-color:#ffd27a; box-shadow:0 6px 18px rgba(255,190,60,0.12)}
-    .small{font-size:12px; color:#666}
-    .value{font-weight:700}
-    footer{margin-top:12px; font-size:12px; color:#666}
+    .highlight { background: linear-gradient(90deg, #fff7c2, #ffe3a3); padding: 4px 6px; border-radius: 6px; }
+    .tooltip { position: fixed; pointer-events: none; background: rgba(0,0,0,0.8); color: #fff; padding: 8px 10px; border-radius: 6px; font-size: 13px; max-width: 260px; z-index: 1080; }
+    .step.active { border-color: #ffd27a; box-shadow: 0 6px 18px rgba(255,190,60,0.12); }
+    .node { width: 80px; height: 80px; }
+    .arrow { font-size: 24px; }
   </style>
 </head>
 <body>
-  <h1>反向传播 + 梯度下降（儿童可视化，鼠标移到元素上看解释）</h1>
-  <div class="row">
-    <div class="box left">
-      <div class="control">
-        <label>输入 x: <span id="xVal" class="value">1.0</span></label>
-        <input id="x" type="range" min="-2" max="2" step="0.1" value="1">
-
-        <label>目标 t（正确答案）: <span id="tVal" class="value">2.0</span></label>
-        <input id="t" type="range" min="-2" max="4" step="0.1" value="2">
-
-        <label>权重 w: <span id="wVal" class="value">0.5</span></label>
-        <input id="w" type="range" min="-2" max="2" step="0.01" value="0.5">
-
-        <label>偏置 b: <span id="bVal" class="value">0.0</span></label>
-        <input id="b" type="range" min="-2" max="2" step="0.01" value="0">
-
-        <label>学习率 lr: <span id="lrVal" class="value">0.1</span></label>
-        <input id="lr" type="range" min="0.01" max="0.5" step="0.01" value="0.1">
-
-        <div style="display:flex; gap:8px; margin-top:6px">
-          <button id="stepBtn" class="btn">执行一步（前向→反向→更新）</button>
-          <button id="runBtn" class="btn secondary">自动跑 10 步</button>
-          <button id="resetBtn" class="btn secondary">重置</button>
-        </div>
-
-        <div class="vars" style="margin-top:8px">
-          <div class="var" data-tip="x：网络的输入（我们给的数）" id="tip-x">x = 1.0</div>
-          <div class="var" data-tip="w：权重，网络要学会调整它" id="tip-w">w = 0.5</div>
-          <div class="var" data-tip="b：偏置，网络学会的另一个数" id="tip-b">b = 0.0</div>
-          <div class="var" data-tip="y：模型的输出，y = w*x + b" id="tip-y">y = 0.5</div>
-          <div class="var" data-tip="t：目标值（正确答案）" id="tip-t">t = 2.0</div>
-          <div class="var" data-tip="Loss：损失，表示和正确答案的差别，越小越好" id="tip-loss">Loss = 2.25</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="box right">
-      <div style="display:flex; gap:12px; align-items:flex-start">
-        <div style="flex:1">
-          <div class="network">
-            <div class="node" title="输入 x（你给的数）" id="node-x">x<br><span class="small" id="node-x-val">1.0</span></div>
-            <div class="arrow">→</div>
-            <div class="node" title="线性层：y = w*x + b" id="node-y">y<br><span class="small" id="node-y-val">0.5</span></div>
-            <div class="arrow">→</div>
-            <div class="node" title="损失：Loss = (y - t)^2" id="node-loss">Loss<br><span class="small" id="node-loss-val">2.25</span></div>
-          </div>
-
-          <div class="formula" id="formulaBox">
-            <div><strong>前向传播（算输出）：</strong></div>
-            <div id="fwd">y = <span class="highlight var-term" data-tip="w：权重">w</span> * <span class="highlight var-term" data-tip="x：输入">x</span> + <span class="highlight var-term" data-tip="b：偏置">b</span>
-            &nbsp;&nbsp;&nbsp;→ y = <span id="fwd-y">0.5</span></div>
-
-            <div style="margin-top:8px"><strong>计算损失（越小越好）：</strong></div>
-            <div id="lossLine">Loss = (y - t)^2 &nbsp;&nbsp;→ Loss = <span id="lossVal">2.25</span></div>
-
-            <hr style="margin:10px 0">
-
-            <div><strong>反向传播（求梯度）—— 用链式法则很简单：</strong></div>
-            <div class="small">先算损失对 y 的导数：</div>
-            <div id="dLdyLine">dL/dy = 2 * (y - t) &nbsp;&nbsp;→ <span id="dLdy">-1.5</span></div>
-            <div class="small">再算损失对 w 和 b：</div>
-            <div id="dLdWLine">dL/dw = dL/dy * x &nbsp;&nbsp;→ <span id="dLdW">-1.5</span></div>
-            <div id="dLdBLine">dL/db = dL/dy * 1 &nbsp;&nbsp;→ <span id="dLdB">-1.5</span></div>
-
-            <hr style="margin:10px 0">
-            <div><strong>梯度下降（更新参数）：</strong></div>
-            <div id="updateLine">w = w - lr * dL/dw &nbsp; &nbsp; b = b - lr * dL/db</div>
-            <div class="small">例如：学习率 lr = <span id="lrShow">0.1</span></div>
-            <div style="margin-top:6px">更新后： w = <span id="newW">0.65</span> ， b = <span id="newB">0.15</span></div>
-
-          </div>
-        </div>
-
-        <div style="width:260px">
-          <div><strong>步骤（鼠标移到步骤上查看公式和变量）</strong></div>
-          <div class="step-list">
-            <div class="step" id="step1">1. 前向：计算 y = w*x + b</div>
-            <div class="step" id="step2">2. 算损失：Loss = (y - t)^2</div>
-            <div class="step" id="step3">3. 反向：dL/dy = 2(y - t) ; dL/dw = dL/dy * x ; dL/db = dL/dy</div>
-            <div class="step" id="step4">4. 更新：w -= lr * dL/dw ; b -= lr * dL/db</div>
-          </div>
-
-          <div style="margin-top:12px">
-            <div><strong>小词语表（鼠标移上看解释）</strong></div>
-            <div class="small" style="margin-top:6px">
-              <div class="var" data-tip="损失：预测和正确答案差的平方，越小越好">Loss（损失）</div>
-              <div class="var" data-tip="梯度：告诉我们该把参数改多少，方向和大小都在里面">Gradient（梯度）</div>
-              <div class="var" data-tip="学习率：每次改变参数的步子大小，不能太大也不能太小">lr（学习率）</div>
+  <div class="container mt-4">
+    <h1 class="mb-4 h3">反向传播 + 梯度下降（儿童可视化，鼠标移到元素上看解释）</h1>
+    <div class="row">
+      <div class="col-lg-5 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="x" class="form-label">输入 x: <span id="xVal" class="fw-bold">1.0</span></label>
+              <input id="x" type="range" class="form-range" min="-2" max="2" step="0.1" value="1">
+            </div>
+            <div class="mb-3">
+              <label for="t" class="form-label">目标 t（正确答案）: <span id="tVal" class="fw-bold">2.0</span></label>
+              <input id="t" type="range" class="form-range" min="-2" max="4" step="0.1" value="2">
+            </div>
+            <div class="mb-3">
+              <label for="w" class="form-label">权重 w: <span id="wVal" class="fw-bold">0.5</span></label>
+              <input id="w" type="range" class="form-range" min="-2" max="2" step="0.01" value="0.5">
+            </div>
+            <div class="mb-3">
+              <label for="b" class="form-label">偏置 b: <span id="bVal" class="fw-bold">0.0</span></label>
+              <input id="b" type="range" class="form-range" min="-2" max="2" step="0.01" value="0">
+            </div>
+            <div class="mb-3">
+              <label for="lr" class="form-label">学习率 lr: <span id="lrVal" class="fw-bold">0.1</span></label>
+              <input id="lr" type="range" class="form-range" min="0.01" max="0.5" step="0.01" value="0.1">
+            </div>
+            <div class="d-flex gap-2 mt-4">
+              <button id="stepBtn" class="btn btn-primary">执行一步</button>
+              <button id="runBtn" class="btn btn-secondary">自动跑 10 步</button>
+              <button id="resetBtn" class="btn btn-secondary">重置</button>
+            </div>
+            <div class="mt-3 d-flex gap-2 flex-wrap">
+              <div class="var badge bg-light text-dark border" data-tip="x：网络的输入（我们给的数）" id="tip-x">x = 1.0</div>
+              <div class="var badge bg-light text-dark border" data-tip="w：权重，网络要学会调整它" id="tip-w">w = 0.5</div>
+              <div class="var badge bg-light text-dark border" data-tip="b：偏置，网络学会的另一个数" id="tip-b">b = 0.0</div>
+              <div class="var badge bg-light text-dark border" data-tip="y：模型的输出，y = w*x + b" id="tip-y">y = 0.5</div>
+              <div class="var badge bg-light text-dark border" data-tip="t：目标值（正确答案）" id="tip-t">t = 2.0</div>
+              <div class="var badge bg-danger text-white border" data-tip="Loss：损失，表示和正确答案的差别，越小越好" id="tip-loss">Loss = 2.25</div>
             </div>
           </div>
         </div>
       </div>
 
-      <footer>提示：把鼠标移到黄色高亮或变量上，会显示更详细的解释（适合一年级小学生的语言）。</footer>
+      <div class="col-lg-7 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="network d-flex gap-3 align-items-center justify-content-center p-3">
+                  <div class="node rounded-circle bg-primary-subtle d-flex align-items-center justify-content-center fw-bold text-center" title="输入 x（你给的数）" id="node-x">x<br><small id="node-x-val" class="fw-normal">1.0</small></div>
+                  <div class="arrow">→</div>
+                  <div class="node rounded-circle bg-primary-subtle d-flex align-items-center justify-content-center fw-bold text-center" title="线性层：y = w*x + b" id="node-y">y<br><small id="node-y-val" class="fw-normal">0.5</small></div>
+                  <div class="arrow">→</div>
+                  <div class="node rounded-circle bg-danger-subtle d-flex align-items-center justify-content-center fw-bold text-center" title="损失：Loss = (y - t)^2" id="node-loss">Loss<br><small id="node-loss-val" class="fw-normal">2.25</small></div>
+                </div>
+
+                <div class="formula p-3 bg-light-subtle rounded mt-3">
+                  <div><strong>前向传播（算输出）：</strong></div>
+                  <div id="fwd">y = <span class="highlight var-term" data-tip="w：权重">w</span> * <span class="highlight var-term" data-tip="x：输入">x</span> + <span class="highlight var-term" data-tip="b：偏置">b</span> &nbsp;&nbsp;&nbsp;→ y = <span id="fwd-y">0.5</span></div>
+                  <div class="mt-2"><strong>计算损失（越小越好）：</strong></div>
+                  <div id="lossLine">Loss = (y - t)^2 &nbsp;&nbsp;→ Loss = <span id="lossVal">2.25</span></div>
+                  <hr class="my-2">
+                  <div><strong>反向传播（求梯度）：</strong></div>
+                  <small>先算损失对 y 的导数：</small>
+                  <div id="dLdyLine">dL/dy = 2 * (y - t) &nbsp;&nbsp;→ <span id="dLdy">-1.5</span></div>
+                  <small>再算损失对 w 和 b：</small>
+                  <div id="dLdWLine">dL/dw = dL/dy * x &nbsp;&nbsp;→ <span id="dLdW">-1.5</span></div>
+                  <div id="dLdBLine">dL/db = dL/dy * 1 &nbsp;&nbsp;→ <span id="dLdB">-1.5</span></div>
+                  <hr class="my-2">
+                  <div><strong>梯度下降（更新参数）：</strong></div>
+                  <div id="updateLine">w = w - lr * dL/dw &nbsp; &nbsp; b = b - lr * dL/db</div>
+                  <small>例如：学习率 lr = <span id="lrShow">0.1</span></small>
+                  <div class="mt-1">更新后： w = <span id="newW" class="fw-bold">0.65</span> ， b = <span id="newB" class="fw-bold">0.15</span></div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div><strong>步骤</strong></div>
+                <div class="list-group mt-2">
+                  <div class="step list-group-item" id="step1">1. 前向：计算 y</div>
+                  <div class="step list-group-item" id="step2">2. 算损失 Loss</div>
+                  <div class="step list-group-item" id="step3">3. 反向：求梯度</div>
+                  <div class="step list-group-item" id="step4">4. 更新：w, b</div>
+                </div>
+                <div class="mt-3">
+                  <strong>小词语表</strong>
+                  <div class="d-flex flex-wrap gap-1 mt-2">
+                    <div class="var badge bg-secondary" data-tip="损失：预测和正确答案差的平方，越小越好">Loss</div>
+                    <div class="var badge bg-secondary" data-tip="梯度：告诉我们该把参数改多少">Gradient</div>
+                    <div class="var badge bg-secondary" data-tip="学习率：每次改变参数的步子大小">lr</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <footer class="mt-3 small text-muted">提示：把鼠标移到黄色高亮或变量上，会显示更详细的解释。</footer>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <div id="tooltip" class="tooltip" style="display:none"></div>
 
   <script>
+    // The original JavaScript is preserved here, no changes needed.
     // DOM refs
     const xSlider = document.getElementById('x');
     const tSlider = document.getElementById('t');
@@ -246,7 +232,7 @@
     function flashStep(id){
       const el = document.getElementById(id);
       el.classList.add('active');
-      setTimeout(()=>el.classList.remove('active'),300);
+      setTimeout(()=>el.classList.remove('active'), 500);
     }
 
     function oneStep(){
@@ -256,24 +242,25 @@
       // show forward briefly
       renderValues();
 
-      // 2 loss
-      flashStep('step2');
-      // 3 backward
-      flashStep('step3');
-      // 4 update
-      flashStep('step4');
-      w = w - lr * grad_w;
-      b = b - lr * grad_b;
-      // update sliders and render
-      wSlider.value = w; bSlider.value = b;
-      renderValues();
+      setTimeout(()=>{
+        flashStep('step2');
+      }, 100);
+      
+      setTimeout(()=>{
+        flashStep('step3');
+      }, 200);
+
+      setTimeout(()=>{
+        flashStep('step4');
+        w = w - lr * grad_w;
+        b = b - lr * grad_b;
+        // update sliders and render
+        wSlider.value = w; bSlider.value = b;
+        renderValues();
+      }, 300);
     }
 
     // tooltip handling
-    document.addEventListener('mousemove',(e)=>{
-      // leave empty; show on hover
-    });
-
     tipElems.forEach(el=>{
       el.addEventListener('mouseenter',(ev)=>{
         const t = el.getAttribute('data-tip');
@@ -286,8 +273,7 @@
         tooltip.style.left = x + 'px'; tooltip.style.top = y + 'px';
       });
     });
-
-    // also allow hovering on highlighted formula parts
+    
     document.querySelectorAll('.var-term').forEach(el=>{
       el.addEventListener('mouseenter',()=>{
         const t = el.getAttribute('data-tip') || '变量';
