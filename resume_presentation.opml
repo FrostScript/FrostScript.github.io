@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>云端算法工程师面试 PPT 汇报大纲 - 刘嘉豪</title>
+  </head>
+  <body>
+    <outline text="PPT 1: 个人概况与核心技能栈">
+      <outline text="教育背景">
+        <outline text="广东海洋大学 | 计算机科学与技术 | 本科 (2021-2025) [cite: 69, 78]"/>
+        <outline text="专业成就：综合排名年级前 10% [cite: 70]；多次荣获二、三等奖学金 [cite: 75]"/>
+        <outline text="理论基础：精通机器学习、数据结构、概率论与数理统计 [cite: 71]"/>
+      </outline>
+      <outline text="技能关键词 (对应岗位需求)">
+        <outline text="核心语言：Python (精通), C#, SQL [cite: 4, 17, 22, 37]"/>
+        <outline text="AI/CV 技术：OpenCV, YOLOv8, PyTorch, RAG 架构 [cite: 18, 43, 48]"/>
+        <outline text="工具链：Pandas, Scrapy, Git, Docker (学习中) [cite: 17, 22]"/>
+      </outline>
+    </outline>
+
+    <outline text="PPT 2: 核心技术匹配度 (核心竞争力)">
+      <outline text="计算机视觉 (CV) 与 深度学习">
+        <outline text="具备模型架构改良能力：引入 ODConv 动态卷积与 SPPF 模块优化 YOLOv8 [cite: 50]"/>
+        <outline text="端到端视觉系统：实现人脸录入、检测（Haar）与 LBPH 识别的全流程开发 [cite: 45, 46]"/>
+      </outline>
+      <outline text="物理仿真与数字孪生潜力">
+        <outline text="底层建模：主导定日镜场多效率耦合模型，集成光线追踪与蒙特卡洛模拟 [cite: 55]"/>
+        <outline text="仿真寻优：设计自适应引力搜索算法 (AGSA)，提升参数寻优效率 35% [cite: 57]"/>
+      </outline>
+      <outline text="工程化与云端部署能力">
+        <outline text="服务封装：将 AI 分析模型集成至 C# 跨平台应用，实现算法与业务逻辑解耦 [cite: 37]"/>
+        <outline text="数据流水线：构建标准化预处理流水线，支持多格式 (CSV/LAS) 异常检测与降噪 [cite: 34]"/>
+      </outline>
+    </outline>
+
+    <outline text="PPT 3: 精选项目深挖 (STAR 法则)">
+      <outline text="项目 A：基于改进 YOLOv8 的细粒度目标检测">
+        <outline text="挑战：不同成熟度苹果特征相近，检测难度大 [cite: 50]"/>
+        <outline text="行动：引入余弦退火算法优化训练，通过特征提取与面积计算进行质量估计 "/>
+        <outline text="结果：识别率达到 90% 以上 "/>
+      </outline>
+      <outline text="项目 B：面向学术文献的 RAG 智能交互系统">
+        <outline text="挑战：大规模文献的精准检索与语义理解 [cite: 40]"/>
+        <outline text="行动：应用多模态信息处理与向量数据库技术，构建知识库大模型 [cite: 18, 40]"/>
+        <outline text="结果：实现高效学术知识检索与智能化问答交互 [cite: 41]"/>
+      </outline>
+    </outline>
+
+    <outline text="PPT 4: 针对岗位个人 SWOT 分析">
+      <outline text="Strengths (优势)">
+        <outline text="扎实理论：数学建模二等奖与计算机专业 Top 10% 的底层逻辑 [cite: 6, 7, 70]"/>
+        <outline text="跨域融合：具备从 CV 算法到物理建模再到 RAG 系统构建的复合能力 [cite: 18, 55]"/>
+      </outline>
+      <outline text="Weaknesses (劣势) &amp; Action Plan">
+        <outline text="短板：暂无直接医疗 DICOM 数据实操经验；Isaac Sim 尚处于上手阶段"/>
+        <outline text="补救：凭借物理仿真 (SolTrace) 经验快速迁移至 Isaac Sim；学习医疗隐私安全规范 [cite: 58]"/>
+      </outline>
+      <outline text="Opportunities (机会)">
+        <outline text="医疗 AI 与数字孪生行业的快速增长"/>
+        <outline text="具备阅读英文 Paper 的能力，可快速跟进最前沿 SOTA 模型 [cite: 77]"/>
+      </outline>
+      <outline text="Threats (挑战)">
+        <outline text="算法迭代极快，需保持高强度的技术追求与学习抗压能力"/>
+      </outline>
+    </outline>
+
+    <outline text="PPT 5: 未来展望与 Q&amp;A">
+      <outline text="入职计划">
+        <outline text="短期：快速掌握医疗影像标注规范与 Isaac Sim 环境搭建"/>
+        <outline text="中期：优化云端算法推理延迟，提升医疗影像分割精度"/>
+      </outline>
+      <outline text="结语：期待能以坚实的算法功底为团队创造价值"/>
+    </outline>
+  </body>
+</opml>

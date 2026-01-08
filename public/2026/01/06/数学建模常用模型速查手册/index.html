@@ -1,0 +1,1925 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>数学建模常用模型速查手册 - Frost's Blog</title>
+
+  
+    <meta name="description" content="数学建模常用模型速查手册本文档梳理数学建模中常见的模型，并提供一个快速参考。  第一部分：模型速查总表   模型类别 模型名称 主要使用场景 核心特征    优化算法 线性规划 (LP) 资源分配、生产计划、成本最小化 目标函数和约束条件均为 线性，求解效率高。    整数规划 (IP&#x2F;MIP) 变量含整数的决策问题（如选址、调度） LP的扩展，决策变量部分或全部为整数，计算复杂度高。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数学建模常用模型速查手册">
+<meta property="og:url" content="http://frostscript.github.io/2026/01/06/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9E%8B%E9%80%9F%E6%9F%A5%E6%89%8B%E5%86%8C/">
+<meta property="og:site_name" content="Frost&#39;s Blog">
+<meta property="og:description" content="数学建模常用模型速查手册本文档梳理数学建模中常见的模型，并提供一个快速参考。  第一部分：模型速查总表   模型类别 模型名称 主要使用场景 核心特征    优化算法 线性规划 (LP) 资源分配、生产计划、成本最小化 目标函数和约束条件均为 线性，求解效率高。    整数规划 (IP&#x2F;MIP) 变量含整数的决策问题（如选址、调度） LP的扩展，决策变量部分或全部为整数，计算复杂度高。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://frostscript.github.io/source/1763695201845.jpg">
+<meta property="article:published_time" content="2026-01-05T16:57:45.000Z">
+<meta property="article:modified_time" content="2026-01-05T16:58:33.815Z">
+<meta property="article:author" content="Frost">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="数学建模，笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://frostscript.github.io/source/1763695201845.jpg">
+  
+  
+  
+  <meta name="keywords" content="算法,数学建模，笔记">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.33.1">
+
+
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Frost","sameAs":[],"image":"/source/1763695201845.jpg"},"dateCreated":"2026-01-06T00:57:45+08:00","dateModified":"2026-01-06T00:58:33+08:00","datePublished":"2026-01-06T00:57:45+08:00","description":"","headline":"数学建模常用模型速查手册","mainEntityOfPage":{"@type":"WebPage","@id":"http://frostscript.github.io/2026/01/06/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9E%8B%E9%80%9F%E6%9F%A5%E6%89%8B%E5%86%8C/"},"publisher":{"@type":"Organization","name":"Frost","sameAs":[],"image":"/source/1763695201845.jpg","logo":{"@type":"ImageObject","url":"/source/1763695201845.jpg"}},"url":"http://frostscript.github.io/2026/01/06/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9E%8B%E9%80%9F%E6%9F%A5%E6%89%8B%E5%86%8C/","keywords":"算法, 数学建模，笔记","image":[]}</script>
+  
+</head>
+<body>
+
+<div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/source/1763695201845.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Frost's Blog</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/01/06/CV%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/"><span class="title">CV算法学习路径</span></a><a class="item title" href="/2026/01/06/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9E%8B%E9%80%9F%E6%9F%A5%E6%89%8B%E5%86%8C/"><span class="title">数学建模常用模型速查手册</span></a><a class="item title" href="/2026/01/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%81%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%8E%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/"><span class="title">机器学习、深度学习与强化学习</span></a><a class="item title" href="/2025/12/27/lengthOfLongestSubstring/"><span class="title">无重复字符的最长子串 - 算法解析与演示</span></a><a class="item title" href="/2025/12/27/%E4%BB%8ELeetCode-%E7%83%AD%E9%A2%98-100%E5%BC%80%E5%A7%8B%E5%AD%A6%E7%AE%97%E6%B3%95/"><span class="title">从LeetCode 热题 100开始学算法</span></a><a class="item title" href="/2025/11/20/english-grammar-core-points/"><span class="title">英语写作与语法核心要点</span></a><a class="item title" href="/2025/12/09/Pytorch-Basic/"><span class="title">Pytorch Basic</span></a><a class="item title" href="/2025/11/23/IELTS-Plan/"><span class="title">IELTS Plan</span></a><a class="item title" href="/2025/11/20/hexo-usage-guide/"><span class="title">Hexo 使用完整指南</span></a></div></widget>
+</div>
+
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-01-05T16:57:45.000Z">2026-01-06</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-01-05T16:58:33.815Z">2026-01-06</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>数学建模常用模型速查手册</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h1 id="数学建模常用模型速查手册"><a href="#数学建模常用模型速查手册" class="headerlink" title="数学建模常用模型速查手册"></a>数学建模常用模型速查手册</h1><p>本文档梳理数学建模中常见的模型，并提供一个快速参考。</p>
+<hr>
+<h2 id="第一部分：模型速查总表"><a href="#第一部分：模型速查总表" class="headerlink" title="第一部分：模型速查总表"></a>第一部分：模型速查总表</h2><table>
+<thead>
+<tr>
+<th align="left">模型类别</th>
+<th align="left">模型名称</th>
+<th align="left">主要使用场景</th>
+<th align="left">核心特征</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>优化算法</strong></td>
+<td align="left"><strong>线性规划 (LP)</strong></td>
+<td align="left">资源分配、生产计划、成本最小化</td>
+<td align="left">目标函数和约束条件均为 <strong>线性</strong>，求解效率高。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>整数规划 (IP&#x2F;MIP)</strong></td>
+<td align="left">变量含整数的决策问题（如选址、调度）</td>
+<td align="left">LP的扩展，决策变量部分或全部为整数，计算复杂度高。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>0-1规划</strong></td>
+<td align="left">“是&#x2F;否”类型的决策问题（如项目选择、背包问题）</td>
+<td align="left">特殊的整数规划，变量仅取0或1。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>非线性规划 (NLP)</strong></td>
+<td align="left">目标或约束为非线性函数（如工程设计、金融投资组合）</td>
+<td align="left">更贴近现实，但可能存在局部最优解，求解困难。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>动态规划 (DP)</strong></td>
+<td align="left">多阶段决策过程优化</td>
+<td align="left">将问题分解为最优子结构，利用状态转移方程求解。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>目标规划 (GP)</strong></td>
+<td align="left">多目标决策，在资源有限下使各目标尽可能接近期望值</td>
+<td align="left">适用于多目标冲突场景，寻找“满意解”而非单一“最优解”。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>二次规划 (QP)</strong></td>
+<td align="left">目标函数是二次函数，约束是线性的优化问题</td>
+<td align="left">广泛用于投资组合优化（最小化方差）。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>随机规划</strong></td>
+<td align="left">涉及不确定性（随机变量）的优化问题</td>
+<td align="left">在不确定环境下做最优决策，如库存管理、能源规划。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>网络流模型</strong></td>
+<td align="left">网络中的流量分配与优化（如最大流、最小费用流）</td>
+<td align="left">基于图论，解决物流、通信网络中的流量问题。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>旅行商问题 (TSP)</strong></td>
+<td align="left">寻找访问N个城市并返回出发点的最短路径</td>
+<td align="left">经典的组合优化问题，NP-hard问题。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>车辆路径问题 (VRP)</strong></td>
+<td align="left">为一组车辆规划最优配送路线</td>
+<td align="left">TSP的扩展，考虑车辆容量、配送时间窗等。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>遗传算法 (GA)</strong></td>
+<td align="left">复杂优化问题的启发式搜索</td>
+<td align="left">模拟自然选择和遗传机制，全局搜索能力强，但可能早熟。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>模拟退火 (SA)</strong></td>
+<td align="left">全局优化问题的随机搜索算法</td>
+<td align="left">模拟固体降温过程，允许在一定概率下接受劣质解以跳出局部最优。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>蚁群算法 (ACO)</strong></td>
+<td align="left">在图中寻找最优路径的概率性算法</td>
+<td align="left">模拟蚂蚁觅食行为，通过信息素正反馈协作寻优。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>粒子群算法 (PSO)</strong></td>
+<td align="left">模拟鸟群觅食行为的群体智能优化算法</td>
+<td align="left">通过个体和群体经验更新自身位置和速度来寻找最优解。</td>
+</tr>
+<tr>
+<td align="left"><strong>评价与决策</strong></td>
+<td align="left"><strong>层次分析法 (AHP)</strong></td>
+<td align="left">对多准则、分层决策问题进行权重计算和方案排序</td>
+<td align="left">将定性问题定量化，通过构建判断矩阵计算权重，主观性较强。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>网络分析法 (ANP)</strong></td>
+<td align="left">AHP的扩展，考虑了指标间的相互依赖和反馈关系</td>
+<td align="left">更真实地反映复杂决策系统中各元素间的相互作用。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>TOPSIS法</strong></td>
+<td align="left">通过计算与最优、最劣解的距离进行多方案排序</td>
+<td align="left">思路简单直观，对数据分布无特殊要求。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>VIKOR法</strong></td>
+<td align="left">在多准则决策中提供折衷解，侧重于冲突下的妥协</td>
+<td align="left">同时考虑最大化群体效益和最小化个体遗憾。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>ELECTRE</strong></td>
+<td align="left">基于“超越关系”对方案进行排序的决策方法</td>
+<td align="left">处理不确定性和模糊性较强，但结果可能无唯一解。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>PROMETHEE</strong></td>
+<td align="left">基于优先函数定义方案间的优先流，进行排序</td>
+<td align="left">比ELECTRE更易于理解和使用，参数设置灵活。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>熵权法 (EWM)</strong></td>
+<td align="left">客观地确定多指标评价体系中的指标权重</td>
+<td align="left">根据指标数据的变异程度（信息熵）来赋权，避免主观性。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>CRITIC法</strong></td>
+<td align="left">综合指标的变异性和冲突性来客观赋权</td>
+<td align="left">同时考虑了每个指标内部的对比强度和指标间的冲突。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>模糊综合评价</strong></td>
+<td align="left">处理评价指标和标准模糊不清的决策问题</td>
+<td align="left">基于模糊数学，适用于定性指标的量化评估。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>灰色关联分析(GRA)</strong></td>
+<td align="left">分析系统内各因素之间关联度的强弱</td>
+<td align="left">根据序列曲线的几何形状相似度来判断关联程度。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>DEMATEL</strong></td>
+<td align="left">识别和分析复杂系统中各因素间的因果关系和影响度</td>
+<td align="left">通过构建直接影响矩阵，计算影响度与被影响度。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>数据包络分析(DEA)</strong></td>
+<td align="left">评价多输入、多输出的“部门”或“单位”的相对效率</td>
+<td align="left">非参数方法，无需预设函数形式，常用于评价医院、银行等效率。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>成本效益分析(CBA)</strong></td>
+<td align="left">评估项目的投入（成本）与产出（效益）是否值得</td>
+<td align="left">将所有成本和效益货币化，计算净现值或内部收益率。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>博弈论模型</strong></td>
+<td align="left">分析多个决策主体在策略互动中的行为和均衡</td>
+<td align="left">如囚徒困境、纳什均衡，用于市场竞争、谈判等分析。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>效用理论</strong></td>
+<td align="left">描述决策者在不确定性下的偏好和风险态度</td>
+<td align="left">为决策者的选择提供理论基础。</td>
+</tr>
+<tr>
+<td align="left"><strong>统计与概率</strong></td>
+<td align="left"><strong>描述性统计</strong></td>
+<td align="left">总结和呈现数据基本特征（均值、中位数、方差等）</td>
+<td align="left">数据分析的第一步，了解数据概况。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>假设检验</strong></td>
+<td align="left">判断样本与总体、或样本与样本之间差异是否显著</td>
+<td align="left">如t检验、Z检验、F检验。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>t检验</strong></td>
+<td align="left">检验两个正态分布总体的均值是否存在显著差异</td>
+<td align="left">分为单样本、独立样本、配对样本t检验。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>方差分析 (ANOVA)</strong></td>
+<td align="left">检验两个或以上样本均值是否存在显著差异</td>
+<td align="left">t检验的扩展，分析类别自变量对数值因变量的影响。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>卡方检验 (Chi-Squared)</strong></td>
+<td align="left">检验两个分类变量是否独立</td>
+<td align="left">用于分析列联表数据，如吸烟与患病是否相关。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>相关性分析</strong></td>
+<td align="left">衡量两个或多个变量之间的线性关系强度和方向</td>
+<td align="left">Pearson（线性）、Spearman（等级）、Kendall（等级）。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>主成分分析 (PCA)</strong></td>
+<td align="left">将多个相关变量转化为少数几个不相关的综合变量（主成分）</td>
+<td align="left">数据降维技术，提取主要信息，解决多重共线性。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>因子分析 (FA)</strong></td>
+<td align="left">从多个原始变量中提取潜在的、不可观测的公共因子</td>
+<td align="left">也是降维方法，但更侧重于解释变量间的内部结构。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>线性回归</strong></td>
+<td align="left">用线性关系模型拟合一个或多个自变量与因变量的关系</td>
+<td align="left">模型简单，解释性强，是所有回归模型的基础。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>多项式回归</strong></td>
+<td align="left">线性回归的扩展，用于拟合非线性关系</td>
+<td align="left">通过引入自变量的高次项实现。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>岭回归&#x2F;Lasso回归</strong></td>
+<td align="left">带有正则化的线性回归，用于处理多重共线性和特征选择</td>
+<td align="left">岭回归用于收缩系数，Lasso回归可将某些系数收缩至0。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>逻辑回归</strong></td>
+<td align="left">用于预测二分类或多分类结果（如：是&#x2F;否，A&#x2F;B&#x2F;C）</td>
+<td align="left">输出是概率，广泛用于分类问题。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>泊松分布&#x2F;回归</strong></td>
+<td align="left">描述和预测单位时间内事件发生的次数</td>
+<td align="left">如预测一小时内到达银行的顾客数。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>贝叶斯定理&#x2F;网络</strong></td>
+<td align="left">在已知先验信息下，更新事件发生的概率</td>
+<td align="left">用于垃圾邮件过滤、医疗诊断等。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>马尔可夫链</strong></td>
+<td align="left">描述状态转移过程，未来状态仅与当前状态有关</td>
+<td align="left">用于预测天气变化、顾客流失、市场占有率转移。</td>
+</tr>
+<tr>
+<td align="left"><strong>预测与时序</strong></td>
+<td align="left"><strong>移动平均法</strong></td>
+<td align="left">通过计算时间序列的滚动平均值来平滑和预测</td>
+<td align="left">简单，但对趋势变化反应滞后。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>指数平滑</strong></td>
+<td align="left">对历史数据赋予递减的权重进行加权平均（SES, Holt, Holt-Winters）</td>
+<td align="left">相比移动平均，对近期数据更敏感，可处理趋势和季节性。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>ARIMA模型</strong></td>
+<td align="left">自回归差分移动平均模型，经典的时间序列预测方法</td>
+<td align="left">将平稳时间序列拟合为AR和MA模型的组合。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>SARIMA模型</strong></td>
+<td align="left">季节性ARIMA模型，ARIMA的扩展</td>
+<td align="left">增加了对数据中季节性变化的处理。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>ARCH&#x2F;GARCH模型</strong></td>
+<td align="left">用于建模和预测金融时间序列的波动性（方差）</td>
+<td align="left">描述了收益率的波动聚集现象。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>灰色预测 (GM(1,1))</strong></td>
+<td align="left">“少数据”、“贫信息”情况下的趋势预测</td>
+<td align="left">对数据量要求小，适合于短期、中期的指数增长趋势预测。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>Prophet模型</strong></td>
+<td align="left">Facebook开源的时间序列预测工具</td>
+<td align="left">易于使用，能自动处理节假日效应和季节性，对缺失值稳健。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>向量自回归(VAR)</strong></td>
+<td align="left">多变量时间序列预测模型，捕捉变量间的动态影响</td>
+<td align="left">将每个变量都视为其他所有变量滞后项的函数。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>状态空间模型</strong></td>
+<td align="left">用潜在的、不可观测的“状态”变量来描述系统的时间演化</td>
+<td align="left">框架灵活，卡尔曼滤波是其重要应用。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>卡尔曼滤波</strong></td>
+<td align="left">在含噪声的测量数据中，估计动态系统的最优状态</td>
+<td align="left">广泛用于导航、信号处理和控制领域。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>灾变理论</strong></td>
+<td align="left">研究系统从稳定状态到另一稳定状态的“突变”现象</td>
+<td align="left">用于解释和预测如桥梁坍塌、市场崩溃等突变行为。</td>
+</tr>
+<tr>
+<td align="left"><strong>机器学习</strong></td>
+<td align="left"><strong>K-Means聚类</strong></td>
+<td align="left">将样本数据自动划分为K个类别</td>
+<td align="left">简单高效，但需预先指定类别数K，且对初始点敏感。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>层次聚类</strong></td>
+<td align="left">通过构建树状的聚类结构（谱系图）进行聚类</td>
+<td align="left">无需预设聚类数，但计算复杂度高。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>DBSCAN</strong></td>
+<td align="left">基于密度的聚类算法，能发现任意形状的簇</td>
+<td align="left">无需指定簇数，能有效处理噪声点。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>支持向量机 (SVM)</strong></td>
+<td align="left">通过寻找最大间隔超平面来进行分类或回归</td>
+<td align="left">在高维空间中表现优异，特别适合小样本、非线性问题。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>K-近邻 (KNN)</strong></td>
+<td align="left">通过寻找最近的K个邻居的类别来决定新样本的类别</td>
+<td align="left">思想简单，无需训练，但预测时计算量大。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>朴素贝叶斯</strong></td>
+<td align="left">基于贝叶斯定理和特征条件独立假设的分类器</td>
+<td align="left">计算简单高效，在文本分类等领域效果好。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>决策树</strong></td>
+<td align="left">通过树状结构进行决策的分类和回归模型</td>
+<td align="left">模型直观，易于解释，但容易过拟合。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>随机森林 (RF)</strong></td>
+<td align="left">通过集成多个决策树来进行分类和回归</td>
+<td align="left">决策树的“进化版”，通过Bagging减少过拟合，提高精度。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>梯度提升机 (GBM)</strong></td>
+<td align="left">通过迭代地训练决策树来修正前一棵树的残差</td>
+<td align="left">集成学习的代表，预测精度高。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>XGBoost&#x2F;LightGBM</strong></td>
+<td align="left">GBM的高效工程实现，速度更快、性能更好</td>
+<td align="left">目前竞赛和业界最常用的机器学习模型之一。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>人工神经网络(ANN)</strong></td>
+<td align="left">模拟人脑神经元结构的计算模型</td>
+<td align="left">学习能力强，能拟合任何复杂函数。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>卷积神经网络(CNN)</strong></td>
+<td align="left">专门处理网格结构数据（如图像）的深度学习模型</td>
+<td align="left">通过卷积核和池化层有效提取空间特征。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>循环神经网络(RNN)</strong></td>
+<td align="left">专门处理序列数据（如文本、时间序列）的模型</td>
+<td align="left">网络中的循环结构使其具有“记忆”功能。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>LSTM&#x2F;GRU</strong></td>
+<td align="left">RNN的变体，用于解决长序列依赖和梯度消失问题</td>
+<td align="left">目前处理序列数据的标准模型。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>Transformer</strong></td>
+<td align="left">基于自注意力机制的深度学习模型，完全替代了RNN</td>
+<td align="left">在自然语言处理（NLP）领域取得巨大成功，如BERT, GPT。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>Q-Learning</strong></td>
+<td align="left">无模型的强化学习算法，用于学习动作-价值函数</td>
+<td align="left">代理（Agent）通过与环境交互，学习在特定状态下执行哪个动作能获得最大回报。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>Agent-Based Modeling (ABM)</strong></td>
+<td align="left">通过模拟大量自主智能体（Agent）的行为及其相互作用来研究系统宏观现象</td>
+<td align="left">自下而上的建模思路，用于模拟社会、经济、生态等复杂系统。</td>
+</tr>
+<tr>
+<td align="left"><strong>图与网络</strong></td>
+<td align="left"><strong>Dijkstra算法</strong></td>
+<td align="left">单源最短路径算法，不能处理负权边</td>
+<td align="left">贪心策略，每次选择离源点最近的未访问节点。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>Floyd-Warshall算法</strong></td>
+<td align="left">计算图中任意两点间的最短路径</td>
+<td align="left">动态规划思想，适用于稠密图，可处理负权边。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><em><em>A</em> 搜索算法</em>*</td>
+<td align="left">带有启发式函数的Dijkstra算法，更高效地寻找最短路径</td>
+<td align="left">在游戏寻路、地图导航中常用。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>Prim&#x2F;Kruskal算法</strong></td>
+<td align="left">最小生成树算法，用最小成本连接所有节点</td>
+<td align="left">用于网络建设、布线等场景。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>PageRank算法</strong></td>
+<td align="left">谷歌用于评估网页重要性的算法</td>
+<td align="left">基于链接分析，一个网页被越多重要网页链接，它就越重要。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>社区发现算法</strong></td>
+<td align="left">在复杂网络中识别出内部连接紧密、外部连接稀疏的节点群组</td>
+<td align="left">如Louvain算法，用于社交网络分析、生物网络功能模块识别。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>网络中心性分析</strong></td>
+<td align="left">衡量网络中节点重要性的指标</td>
+<td align="left">度中心性（连接数）、介数中心性（桥梁作用）、紧密中心性（到其他节点的平均距离）。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>PERT&#x2F;CPM</strong></td>
+<td align="left">项目管理技术，用于规划、调度和控制项目进度</td>
+<td align="left">通过分析任务依赖关系，找到关键路径，估算项目工期。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="第二部分：各模型详细介绍"><a href="#第二部分：各模型详细介绍" class="headerlink" title="第二部分：各模型详细介绍"></a>第二部分：各模型详细介绍</h2><h3 id="优化算法-Optimization-Algorithms"><a href="#优化算法-Optimization-Algorithms" class="headerlink" title="优化算法 (Optimization Algorithms)"></a><strong>优化算法 (Optimization Algorithms)</strong></h3><h4 id="1-线性规划-Linear-Programming-LP"><a href="#1-线性规划-Linear-Programming-LP" class="headerlink" title="1. 线性规划 (Linear Programming, LP)"></a>1. 线性规划 (Linear Programming, LP)</h4><ul>
+<li><strong>简介</strong>: 在线性等式或不等式约束下，求解一个线性目标函数最大值或最小值的问题。</li>
+<li><strong>使用场景</strong>: 生产计划、资源分配、运输问题、营养配餐。</li>
+<li><strong>优点</strong>: 理论成熟，有高效算法（单纯形法、内点法），总能找到全局最优解。</li>
+<li><strong>缺点</strong>: 要求问题必须是严格线性的，现实中很多问题需要简化才能应用。</li>
+<li><strong>关键要素</strong>: 决策变量、目标函数、约束条件。</li>
+</ul>
+<h4 id="2-整数规划-Integer-Programming-IP-MIP"><a href="#2-整数规划-Integer-Programming-IP-MIP" class="headerlink" title="2. 整数规划 (Integer Programming, IP&#x2F;MIP)"></a>2. 整数规划 (Integer Programming, IP&#x2F;MIP)</h4><ul>
+<li><strong>简介</strong>: 决策变量部分或全部被限制为整数的线性规划。</li>
+<li><strong>使用场景</strong>: 选址问题、人员调度、固定成本问题、项目选择。</li>
+<li><strong>优点</strong>: 能精确刻画离散决策，应用场景比LP更广。</li>
+<li><strong>缺点</strong>: 计算复杂度是NP-hard，求解大规模问题非常耗时。</li>
+<li><strong>关键要素</strong>: 同LP，但需明确整数或0-1变量。</li>
+</ul>
+<h4 id="3-0-1规划-0-1-Programming"><a href="#3-0-1规划-0-1-Programming" class="headerlink" title="3. 0-1规划 (0-1 Programming)"></a>3. 0-1规划 (0-1 Programming)</h4><ul>
+<li><strong>简介</strong>: 整数规划的特例，所有决策变量只能取0或1。</li>
+<li><strong>使用场景</strong>: 背包问题（物品选或不选）、任务分配（某人做或不做某事）。</li>
+<li><strong>优点</strong>: 非常适合描述“是&#x2F;否”类型的决策。</li>
+<li><strong>缺点</strong>: 组合爆炸问题，当变量增多时，可能解空间巨大。</li>
+<li><strong>关键要素</strong>: 0-1决策变量、目标函数、约束条件。</li>
+</ul>
+<h4 id="4-非线性规划-Non-Linear-Programming-NLP"><a href="#4-非线性规划-Non-Linear-Programming-NLP" class="headerlink" title="4. 非线性规划 (Non-Linear Programming, NLP)"></a>4. 非线性规划 (Non-Linear Programming, NLP)</h4><ul>
+<li><strong>简介</strong>: 目标函数或约束条件中至少有一个是非线性函数的优化问题。</li>
+<li><strong>使用场景</strong>: 工程设计（如结构尺寸优化）、金融投资组合（如Markowitz模型）、机器学习模型求解（如SVM）。</li>
+<li><strong>优点</strong>: 能更真实地反映现实世界中的非线性关系。</li>
+<li><strong>缺点</strong>: 求解困难，没有通用解法，可能陷入局部最优解，计算复杂度高。</li>
+<li><strong>关键要素</strong>: 决策变量、非线性目标函数、非线性或线性约束。</li>
+</ul>
+<h4 id="5-动态规划-Dynamic-Programming-DP"><a href="#5-动态规划-Dynamic-Programming-DP" class="headerlink" title="5. 动态规划 (Dynamic Programming, DP)"></a>5. 动态规划 (Dynamic Programming, DP)</h4><ul>
+<li><strong>简介</strong>: 将复杂问题分解为一系列相互关联的子问题，通过求解子问题来得到原问题的解。</li>
+<li><strong>使用场景</strong>: 背包问题、最短路径问题、资源管理、库存控制。</li>
+<li><strong>优点</strong>: 保证找到全局最优解，算法思想巧妙，效率高。</li>
+<li><strong>缺点</strong>: 要求问题必须满足“最优子结构”和“无后效性”，设计状态和状态转移方程是难点。</li>
+<li><strong>关键要素</strong>: 阶段、状态、决策、状态转移方程、最优性原理。</li>
+</ul>
+<h4 id="6-目标规划-Goal-Programming-GP"><a href="#6-目标规划-Goal-Programming-GP" class="headerlink" title="6. 目标规划 (Goal Programming, GP)"></a>6. 目标规划 (Goal Programming, GP)</h4><ul>
+<li><strong>简介</strong>: 适用于多目标决策的优化方法。当多个目标无法同时最优时，它致力于最小化各目标与其期望值之间的偏差。</li>
+<li><strong>使用场景</strong>: 企业在制定生产计划时，既想利润最大化，又想成本最小化，还想市场占有率最高。</li>
+<li><strong>优点</strong>: 能有效处理多目标冲突问题，提供一个“满意解”而非单一“最优解”，更符合管理决策实际。</li>
+<li><strong>缺点</strong>: 需要为每个目标设定期望值和优先级，带有一定主观性。</li>
+<li><strong>关键要素</strong>: 决策变量、偏差变量（正负偏差）、目标约束（用偏差表示）、优先因子和权重、目标函数（最小化偏差的加权和）。</li>
+</ul>
+<h4 id="7-二次规划-Quadratic-Programming-QP"><a href="#7-二次规划-Quadratic-Programming-QP" class="headerlink" title="7. 二次规划 (Quadratic Programming, QP)"></a>7. 二次规划 (Quadratic Programming, QP)</h4><ul>
+<li><strong>简介</strong>: 目标函数是二次函数，而约束条件是线性的规划问题。</li>
+<li><strong>使用场景</strong>: 投资组合优化（在给定预期收益下，最小化投资组合的方差&#x2F;风险）、约束最小二乘问题。</li>
+<li><strong>优点</strong>: 若目标函数是凸的，则可以找到全局最优解。</li>
+<li><strong>缺点</strong>: 若目标函数非凸，则可能存在多个局部最优解。</li>
+<li><strong>关键要素</strong>: 决策变量、二次目标函数、线性约束。</li>
+</ul>
+<h4 id="8-随机规划-Stochastic-Programming"><a href="#8-随机规划-Stochastic-Programming" class="headerlink" title="8. 随机规划 (Stochastic Programming)"></a>8. 随机规划 (Stochastic Programming)</h4><ul>
+<li><strong>简介</strong>: 用于在存在不确定性（即部分参数为随机变量）的情况下做出最优决策的优化框架。</li>
+<li><strong>使用场景</strong>: 库存管理（未来需求不确定）、电力系统规划（发电量和负荷不确定）、金融投资（资产回报率不确定）。</li>
+<li><strong>优点</strong>: 能在不确定性环境下制定更稳健、风险更低的决策。</li>
+<li><strong>缺点</strong>: 模型复杂，求解难度大，需要对随机变量的概率分布有较好的假设。</li>
+<li><strong>关键要素</strong>: 决策变量、随机参数及其概率分布、多阶段决策结构。</li>
+</ul>
+<h4 id="9-网络流模型-Network-Flow-Model"><a href="#9-网络流模型-Network-Flow-Model" class="headerlink" title="9. 网络流模型 (Network Flow Model)"></a>9. 网络流模型 (Network Flow Model)</h4><ul>
+<li><strong>简介</strong>: 在有向图中，模拟物质、信息或能量从源点流向汇点的过程，并进行优化。</li>
+<li><strong>使用场景</strong>: <strong>最大流问题</strong>（输油管道网络的最大输送能力）、<strong>最小费用流问题</strong>（在满足流量要求下成本最低的运输方案）。</li>
+<li><strong>优点</strong>: 模型直观，有高效的多项式时间算法（如Ford-Fulkerson, Edmonds-Karp）。</li>
+<li><strong>缺点</strong>: 只能应用于可以抽象为网络流结构的问题。</li>
+<li><strong>关键要素</strong>: 图（节点、弧）、弧的容量限制、费用函数、流量平衡约束。</li>
+</ul>
+<h4 id="10-旅行商问题-Traveling-Salesman-Problem-TSP"><a href="#10-旅行商问题-Traveling-Salesman-Problem-TSP" class="headerlink" title="10. 旅行商问题 (Traveling Salesman Problem, TSP)"></a>10. 旅行商问题 (Traveling Salesman Problem, TSP)</h4><ul>
+<li><strong>简介</strong>: 一个推销员要访问n个城市，要求每个城市访问一次且仅一次，最后返回出发城市，求解最短的路线。</li>
+<li><strong>使用场景</strong>: 电路板钻孔路径优化、物流配送路线规划、DNA测序。</li>
+<li><strong>优点</strong>: 问题定义简单，是许多其他组合优化问题的基础。</li>
+<li><strong>缺点</strong>: 典型的NP-hard问题，当城市数量稍多时，精确求解非常困难，通常使用启发式算法求解。</li>
+<li><strong>关键要素</strong>: 城市（节点）集合、城市间的距离（或成本）矩阵。</li>
+</ul>
+<h4 id="11-车辆路径问题-Vehicle-Routing-Problem-VRP"><a href="#11-车辆路径问题-Vehicle-Routing-Problem-VRP" class="headerlink" title="11. 车辆路径问题 (Vehicle Routing Problem, VRP)"></a>11. 车辆路径问题 (Vehicle Routing Problem, VRP)</h4><ul>
+<li><strong>简介</strong>: TSP的扩展。一个或多个车队从一个或多个配送中心出发，向多个客户点送货，要求规划最优路线以达到总里程最短、成本最低等目标。</li>
+<li><strong>使用场景</strong>: 快递配送、外卖送餐、公交路线规划、供应链物流。</li>
+<li><strong>优点</strong>: 非常贴近现实世界的物流配送场景。</li>
+<li><strong>缺点</strong>: 比TSP更复杂，也是NP-hard问题，通常需要复杂的启发式或元启发式算法求解。</li>
+<li><strong>关键要素</strong>: 客户点、配送中心、车辆（容量、数量）、时间窗、路径成本。</li>
+</ul>
+<h4 id="12-遗传算法-Genetic-Algorithm-GA"><a href="#12-遗传算法-Genetic-Algorithm-GA" class="headerlink" title="12. 遗传算法 (Genetic Algorithm, GA)"></a>12. 遗传算法 (Genetic Algorithm, GA)</h4><ul>
+<li><strong>简介</strong>: 模拟自然选择和遗传学机制的全局优化启发式算法。</li>
+<li><strong>使用场景</strong>: 求解复杂的NP-hard问题（如TSP, VRP）、函数优化、机器学习中的超参数调优。</li>
+<li><strong>优点</strong>: 全局搜索能力强，不易陷入局部最优；不依赖问题的梯度信息。</li>
+<li><strong>缺点</strong>: 参数设置对性能影响大；可能“早熟”；收敛速度慢，无法保证找到最优解。</li>
+<li><strong>关键要素</strong>: 基因编码、适应度函数、选择、交叉、变异。</li>
+</ul>
+<h4 id="13-模拟退火-Simulated-Annealing-SA"><a href="#13-模拟退火-Simulated-Annealing-SA" class="headerlink" title="13. 模拟退火 (Simulated Annealing, SA)"></a>13. 模拟退火 (Simulated Annealing, SA)</h4><ul>
+<li><strong>简介</strong>: 基于物理退火过程的随机优化算法。以一定概率接受比当前解差的解，从而跳出局部最优。</li>
+<li><strong>使用场景</strong>: 求解大规模组合优化问题，如VLSI设计、TSP。</li>
+<li><strong>优点</strong>: 理论基础坚实，实现简单，全局寻优能力强。</li>
+<li><strong>缺点</strong>: 收敛速度慢，参数（初始温度、降温速率）设置敏感。</li>
+<li><strong>关键要素</strong>: 初始解、新解生成机制、Metropolis接受准则、退火调度（降温策略）。</li>
+</ul>
+<h4 id="14-蚁群算法-Ant-Colony-Optimization-ACO"><a href="#14-蚁群算法-Ant-Colony-Optimization-ACO" class="headerlink" title="14. 蚁群算法 (Ant Colony Optimization, ACO)"></a>14. 蚁群算法 (Ant Colony Optimization, ACO)</h4><ul>
+<li><strong>简介</strong>: 模拟蚂蚁觅食过程中通过信息素进行通信的群体智能算法，主要用于在图中寻找最优路径。</li>
+<li><strong>使用场景</strong>: TSP、VRP、网络路由问题。</li>
+<li><strong>优点</strong>: 正反馈机制使其收敛速度快，具有良好的分布式计算潜力。</li>
+<li><strong>缺点</strong>: 容易出现停滞现象（所有蚂蚁都走同一条路径），参数设置复杂。</li>
+<li><strong>关键要素</strong>: 信息素更新规则、启发式信息（如距离）、路径构建策略。</li>
+</ul>
+<h4 id="15-粒子群算法-Particle-Swarm-Optimization-PSO"><a href="#15-粒子群算法-Particle-Swarm-Optimization-PSO" class="headerlink" title="15. 粒子群算法 (Particle Swarm Optimization, PSO)"></a>15. 粒子群算法 (Particle Swarm Optimization, PSO)</h4><ul>
+<li><strong>简介</strong>: 模拟鸟群觅食行为的群体智能优化算法。每个粒子代表一个潜在解，通过追随个体历史最优和群体历史最优来更新自身的位置和速度。</li>
+<li><strong>使用场景</strong>: 函数优化、神经网络训练、模糊系统控制。</li>
+<li><strong>优点</strong>: 算法简单，参数少，易于实现，收敛速度快。</li>
+<li><strong>缺点</strong>: 容易早熟，陷入局部最优，在处理离散优化问题时需要特殊设计。</li>
+<li><strong>关键要素</strong>: 粒子（位置、速度）、个体最优解（pBest）、全局最优解（gBest）、速度和位置更新公式。</li>
+</ul>
+<hr>
+<h3 id="评价与决策类模型-Evaluation-Decision-Models"><a href="#评价与决策类模型-Evaluation-Decision-Models" class="headerlink" title="评价与决策类模型 (Evaluation &amp; Decision Models)"></a><strong>评价与决策类模型 (Evaluation &amp; Decision Models)</strong></h3><h4 id="16-层次分析法-AHP"><a href="#16-层次分析法-AHP" class="headerlink" title="16. 层次分析法 (AHP)"></a>16. 层次分析法 (AHP)</h4><ul>
+<li><strong>简介</strong>: 一种将决策者的思维过程层次化、数量化的决策分析方法。它将复杂问题分解为目标、准则、方案等层次，通过两两比较的方式确定各元素的相对权重。</li>
+<li><strong>使用场景</strong>: 方案选择、绩效评估、资源分配优先级排序。</li>
+<li><strong>优点</strong>: 思路清晰，能处理定性与定量相结合的指标，逻辑性强，简单易用。</li>
+<li><strong>缺点</strong>: <strong>主观性过强</strong>，判断矩阵的构建完全依赖专家经验。当准则层指标过多时，一致性检验难以通过。</li>
+<li><strong>关键要素</strong>: 构建层次结构模型、构造判断矩阵、计算权重向量、一致性检验。</li>
+</ul>
+<h4 id="17-网络分析法-Analytic-Network-Process-ANP"><a href="#17-网络分析法-Analytic-Network-Process-ANP" class="headerlink" title="17. 网络分析法 (Analytic Network Process, ANP)"></a>17. 网络分析法 (Analytic Network Process, ANP)</h4><ul>
+<li><strong>简介</strong>: AHP的扩展，ANP放弃了层次结构中元素之间严格的支配关系，考虑了网络中各元素（包括同层元素）之间的相互依赖和反馈。</li>
+<li><strong>使用场景</strong>: 复杂的战略决策、政策制定，其中各因素相互影响（例如，经济发展、环境保护和社会稳定）。</li>
+<li><strong>优点</strong>: 能更真实地反映复杂决策系统中各元素间的相互作用，模型结构更灵活。</li>
+<li><strong>缺点</strong>: 模型构建和计算比AHP复杂得多，判断矩阵的数量大大增加，主观性问题依然存在。</li>
+<li><strong>关键要素</strong>: 控制层、网络层、元素集、超矩阵（Supermatrix）。</li>
+</ul>
+<h4 id="18-TOPSIS法-Technique-for-Order-of-Preference-by-Similarity-to-Ideal-Solution"><a href="#18-TOPSIS法-Technique-for-Order-of-Preference-by-Similarity-to-Ideal-Solution" class="headerlink" title="18. TOPSIS法 (Technique for Order of Preference by Similarity to Ideal Solution)"></a>18. TOPSIS法 (Technique for Order of Preference by Similarity to Ideal Solution)</h4><ul>
+<li><strong>简介</strong>: 通过检测评价对象与最优解（正理想解）、最劣解（负理想解）的距离来进行排序的方法。</li>
+<li><strong>使用场景</strong>: 多属性、多方案的评价排序，如供应商选择、项目投资决策。</li>
+<li><strong>优点</strong>: 原理简单直观，计算方便，对样本量和数据分布无严格限制。</li>
+<li><strong>缺点</strong>: 需要对数据进行正向化和归一化。权重的确定对结果影响巨大，常需结合AHP或熵权法。</li>
+<li><strong>关键要素</strong>: 决策矩阵、正向化、归一化、加权、计算与正负理想解的距离、计算相对贴近度。</li>
+</ul>
+<h4 id="19-VIKOR法"><a href="#19-VIKOR法" class="headerlink" title="19. VIKOR法"></a>19. VIKOR法</h4><ul>
+<li><strong>简介</strong>: 一种多准则决策中的折衷排序方法，其核心在于最大化群体效用（整体满意度）和最小化个体遗憾（最不满意的程度）。</li>
+<li><strong>使用场景</strong>: 当决策者需要在相互冲突的准则之间寻找一个折衷方案时，如在成本、质量和速度之间权衡。</li>
+<li><strong>优点</strong>: 提供了一个妥协解，更符合现实决策中的权衡思想。</li>
+<li><strong>缺点</strong>: 计算比TOPSIS复杂，决策机制系数v的选择有一定主观性。</li>
+<li><strong>关键要素</strong>: 正负理想解、群体效用S、个体遗憾R、利益比率Q。</li>
+</ul>
+<h4 id="20-ELECTRE-ELimination-Et-Choix-Traduisant-la-REalite"><a href="#20-ELECTRE-ELimination-Et-Choix-Traduisant-la-REalite" class="headerlink" title="20. ELECTRE (ELimination Et Choix Traduisant la REalité)"></a>20. ELECTRE (ELimination Et Choix Traduisant la REalité)</h4><ul>
+<li><strong>简介</strong>: 一类基于“超越关系”的排序方法。它通过成对比较方案，判断一个方案是否“不差于”另一个方案。</li>
+<li><strong>使用场景</strong>: 适用于决策者偏好不明确、数据不精确或定性的决策问题。</li>
+<li><strong>优点</strong>: 能处理不确定性和模糊性，不需要将所有指标转化为单一得分。</li>
+<li><strong>缺点</strong>: 结果可能是部分排序甚至是不可比的，理解和实现相对复杂。</li>
+<li><strong>关键要素</strong>: 协调指数、不协调指数、阈值、超越关系。</li>
+</ul>
+<h4 id="21-PROMETHEE-Preference-Ranking-Organization-METHod-for-Enrichment-of-Evaluations"><a href="#21-PROMETHEE-Preference-Ranking-Organization-METHod-for-Enrichment-of-Evaluations" class="headerlink" title="21. PROMETHEE (Preference Ranking Organization METHod for Enrichment of Evaluations)"></a>21. PROMETHEE (Preference Ranking Organization METHod for Enrichment of Evaluations)</h4><ul>
+<li><strong>简介</strong>: 一种基于优先函数的排序方法。通过为每个准则定义一个优先函数，来量化一个方案优于另一个方案的程度。</li>
+<li><strong>使用场景</strong>: 环境管理、项目选择、金融投资等领域的排序问题。</li>
+<li><strong>优点</strong>: 比ELECTRE更易于理解和使用，参数设置灵活，可以直观地看到每个方案的“正流”（优于其他方案的程度）和“负流”（劣于其他方案的程度）。</li>
+<li><strong>缺点</strong>: 需要为每个准则选择合适的优先函数类型和参数。</li>
+<li><strong>关键要素</strong>: 优先函数、优先指数、正向流、负向流、净流。</li>
+</ul>
+<h4 id="22-熵权法-Entropy-Weight-Method-EWM"><a href="#22-熵权法-Entropy-Weight-Method-EWM" class="headerlink" title="22. 熵权法 (Entropy Weight Method, EWM)"></a>22. 熵权法 (Entropy Weight Method, EWM)</h4><ul>
+<li><strong>简介</strong>: 一种完全客观的指标权重确定方法。根据指标数据的变异程度来赋权，差异越大，信息熵越小，权重越高。</li>
+<li><strong>使用场景</strong>: 在综合评价模型（如TOPSIS）中，为各评价指标提供客观权重，以替代主观赋权。</li>
+<li><strong>优点</strong>: <strong>完全客观</strong>，排除了人为因素的干扰，计算过程简单。</li>
+<li><strong>缺点</strong>: 只依赖于数据的离散程度，有时会产生与常识相悖的权重。</li>
+<li><strong>关键要素</strong>: 数据归一化、计算信息熵、计算信息效用值（或差异系数）、确定权重。</li>
+</ul>
+<h4 id="23-CRITIC法-CRiteria-Importance-Through-Intercriteria-Correlation"><a href="#23-CRITIC法-CRiteria-Importance-Through-Intercriteria-Correlation" class="headerlink" title="23. CRITIC法 (CRiteria Importance Through Intercriteria Correlation)"></a>23. CRITIC法 (CRiteria Importance Through Intercriteria Correlation)</h4><ul>
+<li><strong>简介</strong>: 一种比熵权法更全面的客观赋权法。它同时考虑了两个方面：指标内部的变异性（对比强度）和指标之间的冲突性（相关性）。</li>
+<li><strong>使用场景</strong>: 指标间存在较强相关性的多属性决策问题。</li>
+<li><strong>优点</strong>: 比熵权法考虑得更周全，既考虑了指标自身的信息量，也考虑了指标之间的关系。</li>
+<li><strong>缺点</strong>: 计算相对熵权法复杂一些。</li>
+<li><strong>关键要素</strong>: 对比强度（标准差）、指标冲突性（相关系数）、信息量计算。</li>
+</ul>
+<h4 id="24-模糊综合评价-Fuzzy-Comprehensive-Evaluation"><a href="#24-模糊综合评价-Fuzzy-Comprehensive-Evaluation" class="headerlink" title="24. 模糊综合评价 (Fuzzy Comprehensive Evaluation)"></a>24. 模糊综合评价 (Fuzzy Comprehensive Evaluation)</h4><ul>
+<li><strong>简介</strong>: 基于模糊数学理论的一种综合评价方法。用于处理评价指标和评语标准模糊不清的问题。</li>
+<li><strong>使用场景</strong>: 满意度评价（如“满意”、“较满意”、“一般”）、环境质量评价、教师教学质量评价。</li>
+<li><strong>优点</strong>: 非常适合处理定性指标的量化评估，能较好地反映评价的模糊性。</li>
+<li><strong>缺点</strong>: 隶属函数的确定和权重矢量的计算带有一定主观性。</li>
+<li><strong>关键要素</strong>: 因素集（评价指标）、评语集、隶属度矩阵、权重向量、模糊合成运算。</li>
+</ul>
+<h4 id="25-灰色关联分析-Grey-Relational-Analysis-GRA"><a href="#25-灰色关联分析-Grey-Relational-Analysis-GRA" class="headerlink" title="25. 灰色关联分析 (Grey Relational Analysis, GRA)"></a>25. 灰色关联分析 (Grey Relational Analysis, GRA)</h4><ul>
+<li><strong>简介</strong>: 根据序列曲线几何形状的相似程度来判断因素之间关联度大小的一种方法。</li>
+<li><strong>使用场景</strong>: 系统分析，找出影响某个主要目标的关键因素。例如，分析影响地区经济发展的几个主要因素哪个最重要。</li>
+<li><strong>优点</strong>: 对数据量和分布没有要求，计算量小，简单易行。</li>
+<li><strong>缺点</strong>: 需要确定一个“参考序列”（理想的最优序列），关联度的排序结果依赖于分辨系数的选择。</li>
+<li><strong>关键要素</strong>: 参考序列、比较序列、数据无量纲化、灰色关联系数、关联度。</li>
+</ul>
+<h4 id="26-DEMATEL-Decision-Making-Trial-and-Evaluation-Laboratory"><a href="#26-DEMATEL-Decision-Making-Trial-and-Evaluation-Laboratory" class="headerlink" title="26. DEMATEL (Decision Making Trial and Evaluation Laboratory)"></a>26. DEMATEL (Decision Making Trial and Evaluation Laboratory)</h4><ul>
+<li><strong>简介</strong>: 一种通过图论和矩阵工具来识别和分析复杂系统中各因素间因果关系的系统分析方法。</li>
+<li><strong>使用场景</strong>: 识别复杂问题中的核心因素和根本原因。例如，分析影响供应链中断的各种风险因素，并找出核心风险源。</li>
+<li><strong>优点</strong>: 能清晰地揭示系统中各因素之间的直接和间接影响关系，并区分出原因因素和结果因素。</li>
+<li><strong>缺点</strong>: 需要专家打分来构建初始直接影响矩阵，有主观性。</li>
+<li><strong>关键要素</strong>: 直接影响矩阵、规范化影响矩阵、综合影响矩阵、计算影响度与被影响度、中心度与原因度。</li>
+</ul>
+<h4 id="27-数据包络分析-Data-Envelopment-Analysis-DEA"><a href="#27-数据包络分析-Data-Envelopment-Analysis-DEA" class="headerlink" title="27. 数据包络分析 (Data Envelopment Analysis, DEA)"></a>27. 数据包络分析 (Data Envelopment Analysis, DEA)</h4><ul>
+<li><strong>简介</strong>: 一种用于评价具有相同类型的多输入、多输出的决策单元（DMU）相对效率的非参数方法。</li>
+<li><strong>使用场景</strong>: 评价医院、银行、学校、港口等公共部门或服务行业的运营效率。</li>
+<li><strong>优点</strong>: 无需预设生产函数形式，能处理多输入多输出，评价结果只区分“相对有效”和“无效”。</li>
+<li><strong>缺点</strong>: 结果对异常值敏感，评价结果是相对效率而非绝对效率。</li>
+<li><strong>关键要素</strong>: 决策单元（DMU）、输入指标、输出指标、选择合适的DEA模型（如CCR, BCC）。</li>
+</ul>
+<h4 id="28-成本效益分析-Cost-Benefit-Analysis-CBA"><a href="#28-成本效益分析-Cost-Benefit-Analysis-CBA" class="headerlink" title="28. 成本效益分析 (Cost-Benefit Analysis, CBA)"></a>28. 成本效益分析 (Cost-Benefit Analysis, CBA)</h4><ul>
+<li><strong>简介</strong>: 通过比较一个项目或决策的总成本与总效益，来评估其可行性与价值的方法。</li>
+<li><strong>使用场景</strong>: 政府公共项目投资决策（如修路、建大坝）、企业新项目评估。</li>
+<li><strong>优点</strong>: 提供了一个清晰的决策标准（效益是否大于成本），思路直观。</li>
+<li><strong>缺点</strong>: <strong>难点在于将所有效益和成本都货币化</strong>，尤其是社会效益、环境影响等无形价值。</li>
+<li><strong>关键要素</strong>: 识别所有成本和效益、量化和货币化、折现（考虑时间价值）、计算净现值（NPV）或效益成本比（BCR）。</li>
+</ul>
+<h4 id="29-博弈论模型-Game-Theory-Models"><a href="#29-博弈论模型-Game-Theory-Models" class="headerlink" title="29. 博弈论模型 (Game Theory Models)"></a>29. 博弈论模型 (Game Theory Models)</h4><ul>
+<li><strong>简介</strong>: 研究多个决策主体（参与人）在策略选择上相互作用、相互影响时的决策问题及均衡。</li>
+<li><strong>使用场景</strong>: 市场竞争策略分析（寡头定价）、国际关系、拍卖设计、公共资源管理（公地悲剧）。</li>
+<li><strong>优点</strong>: 提供了一个分析冲突与合作的强大理论框架。</li>
+<li><strong>缺点</strong>: 对参与人的“理性”假设过强，现实中人的行为复杂。</li>
+<li><strong>关键要素</strong>: 参与人、策略集、支付函数、均衡（如纳什均衡）。</li>
+</ul>
+<h4 id="30-效用理论-Utility-Theory"><a href="#30-效用理论-Utility-Theory" class="headerlink" title="30. 效用理论 (Utility Theory)"></a>30. 效用理论 (Utility Theory)</h4><ul>
+<li><strong>简介</strong>: 描述和量化决策者在面对不确定性时的个人偏好和风险态度的理论。</li>
+<li><strong>使用场景</strong>: 个人投资决策（风险厌恶、风险中性、风险偏好）、保险购买决策。</li>
+<li><strong>优点</strong>: 为不确定性下的理性决策提供了数学基础。</li>
+<li><strong>缺点</strong>: 效用函数是个人的、主观的，难以精确测量。</li>
+<li><strong>关键要素</strong>: 效用函数、期望效用。</li>
+</ul>
+<hr>
+<h3 id="统计与概率模型-Statistics-Probability-Models"><a href="#统计与概率模型-Statistics-Probability-Models" class="headerlink" title="统计与概率模型 (Statistics &amp; Probability Models)"></a><strong>统计与概率模型 (Statistics &amp; Probability Models)</strong></h3><h4 id="31-描述性统计-Descriptive-Statistics"><a href="#31-描述性统计-Descriptive-Statistics" class="headerlink" title="31. 描述性统计 (Descriptive Statistics)"></a>31. 描述性统计 (Descriptive Statistics)</h4><ul>
+<li><strong>简介</strong>: 使用图表（如直方图、箱线图）和统计量（如均值、中位数、方差、标准差）来概括和描述数据集的基本特征。</li>
+<li><strong>使用场景</strong>: 任何数据分析项目的第一步，用于了解数据分布、中心趋势、离散程度和异常值。</li>
+<li><strong>优点</strong>: 直观、简单，是理解数据的基础。</li>
+<li><strong>缺点</strong>: 只能描述样本本身，不能用于推断总体。</li>
+<li><strong>关键要素</strong>: 集中趋势（均值、中位数、众数）、离散程度（方差、标准差、极差）、分布形状（偏度、峰度）。</li>
+</ul>
+<h4 id="32-假设检验-Hypothesis-Testing"><a href="#32-假设检验-Hypothesis-Testing" class="headerlink" title="32. 假设检验 (Hypothesis Testing)"></a>32. 假设检验 (Hypothesis Testing)</h4><ul>
+<li><strong>简介</strong>: 一种统计推断方法，用于判断样本与总体、或样本与样本之间的差异是由抽样误差引起还是本质差异所致。</li>
+<li><strong>使用场景</strong>: 检验新药是否比旧药更有效、判断两个地区居民的收入是否有显著差异。</li>
+<li><strong>优点</strong>: 提供了一套科学的、可重复的决策框架来验证猜想。</li>
+<li><strong>缺点</strong>: 结果可能出现第一类错误（弃真）和第二类错误（取伪），结论的可靠性依赖于显著性水平α的选择。</li>
+<li><strong>关键要素</strong>: 原假设(H0)、备择假设(H1)、检验统计量、P值、显著性水平(α)。</li>
+</ul>
+<h4 id="33-t检验-t-test"><a href="#33-t检验-t-test" class="headerlink" title="33. t检验 (t-test)"></a>33. t检验 (t-test)</h4><ul>
+<li><strong>简介</strong>: 用于检验两个正态分布总体的均值是否存在显著差异。</li>
+<li><strong>使用场景</strong>:<ul>
+<li><strong>单样本t检验</strong>：检验某班级的平均身高是否显著高于全国平均水平。</li>
+<li><strong>独立样本t检验</strong>：检验A、B两种教学方法下学生成绩是否有显著差异。</li>
+<li><strong>配对样本t检验</strong>：检验同一组病人在服药前后的血压是否有显著变化。</li>
+</ul>
+</li>
+<li><strong>优点</strong>: 应用广泛，是比较两组均值最常用的方法。</li>
+<li><strong>缺点</strong>: 要求数据服从正态分布（或近似正态），且两组数据方差齐性（对于独立样本t检验）。</li>
+<li><strong>关键要素</strong>: 样本均值、样本标准差、样本量。</li>
+</ul>
+<h4 id="34-方差分析-Analysis-of-Variance-ANOVA"><a href="#34-方差分析-Analysis-of-Variance-ANOVA" class="headerlink" title="34. 方差分析 (Analysis of Variance, ANOVA)"></a>34. 方差分析 (Analysis of Variance, ANOVA)</h4><ul>
+<li><strong>简介</strong>: t检验的扩展，用于检验两个或两个以上样本的均值是否存在显著差异。</li>
+<li><strong>使用场景</strong>: 比较三种不同化肥对农作物产量的影响、分析不同学历人群的平均薪资差异。</li>
+<li><strong>优点</strong>: 能同时比较多个组的均值，避免了进行多次t检验带来的错误率累积。</li>
+<li><strong>缺点</strong>: 只能告诉我们“至少有一组与其他组不同”，但不能指出具体是哪几组之间存在差异（需借助事后检验）。要求各组数据独立、正态、方差齐性。</li>
+<li><strong>关键要素</strong>: F统计量、组间平方和、组内平方和。</li>
+</ul>
+<h4 id="35-卡方检验-Chi-Squared-Test"><a href="#35-卡方检验-Chi-Squared-Test" class="headerlink" title="35. 卡方检验 (Chi-Squared Test)"></a>35. 卡方检验 (Chi-Squared Test)</h4><ul>
+<li><strong>简介</strong>: 用于检验两个或多个分类变量之间是否相互独立的非参数检验。</li>
+<li><strong>使用场景</strong>: 分析吸烟（是&#x2F;否）与肺癌（是&#x2F;否）之间是否存在关联、判断不同血型的人在星座分布上是否有差异。</li>
+<li><strong>优点</strong>: 应用简单，不要求数据分布，专门用于分类数据的关联性分析。</li>
+<li><strong>缺点</strong>: 要求样本量不能太小（通常要求期望频数&gt;5）。</li>
+<li><strong>关键要素</strong>: 观测频数、期望频数、列联表（交叉表）、卡方统计量。</li>
+</ul>
+<h4 id="36-相关性分析-Correlation-Analysis"><a href="#36-相关性分析-Correlation-Analysis" class="headerlink" title="36. 相关性分析 (Correlation Analysis)"></a>36. 相关性分析 (Correlation Analysis)</h4><ul>
+<li><strong>简介</strong>: 衡量两个或多个连续变量之间线性关系强度和方向的统计方法。</li>
+<li><strong>使用场景</strong>: 分析身高与体重、广告投入与销售额、气温与冰淇淋销量之间的关系。</li>
+<li><strong>优点</strong>: 简单直观，相关系数易于解释。</li>
+<li><strong>缺点</strong>: <strong>相关不等于因果</strong>。只能度量线性关系，无法捕捉非线性关系。</li>
+<li><strong>关键要素</strong>: Pearson相关系数（用于正态分布的连续变量）、Spearman等级相关系数（用于有序或非正态变量）、Kendall’s Tau相关系数。</li>
+</ul>
+<h4 id="37-主成分分析-Principal-Component-Analysis-PCA"><a href="#37-主成分分析-Principal-Component-Analysis-PCA" class="headerlink" title="37. 主成分分析 (Principal Component Analysis, PCA)"></a>37. 主成分分析 (Principal Component Analysis, PCA)</h4><ul>
+<li><strong>简介</strong>: 一种数据降维技术，通过线性变换将原始的多个相关变量，转化为少数几个互不相关的综合变量（主成分），同时尽可能多地保留原始数据的信息。</li>
+<li><strong>使用场景</strong>:<ul>
+<li><strong>数据降维与可视化</strong>：将高维数据降到2维或3维进行可视化。</li>
+<li><strong>信息压缩</strong>：用少数几个主成分代替大量原始变量进行后续建模。</li>
+<li><strong>解决多重共线性</strong>：在回归分析中，当自变量高度相关时，可以用主成分代替原始自变量。</li>
+</ul>
+</li>
+<li><strong>优点</strong>: 无需参数设置，客观有效，能消除变量间的相关性。</li>
+<li><strong>缺点</strong>: 降维后得到的主成分的实际意义可能难以解释。</li>
+<li><strong>关键要素</strong>: 协方差矩阵（或相关矩阵）、特征值、特征向量、贡献率。</li>
+</ul>
+<h4 id="38-因子分析-Factor-Analysis-FA"><a href="#38-因子分析-Factor-Analysis-FA" class="headerlink" title="38. 因子分析 (Factor Analysis, FA)"></a>38. 因子分析 (Factor Analysis, FA)</h4><ul>
+<li><strong>简介</strong>: 也是一种降维方法，但其目的不同于PCA。它旨在从多个原始观测变量中，提取出潜在的、不可观测的“公共因子”或“潜在变量”，以解释原始变量之间的相关性。</li>
+<li><strong>使用场景</strong>: 心理学（从多个问卷题目中提取“外向性”、“宜人性”等潜在人格特质）、市场研究（从多个产品评价中提取“性价比”、“外观设计”等潜在因子）。</li>
+<li><strong>优点</strong>: 侧重于揭示变量间的内在结构和关系，解释性比PCA强。</li>
+<li><strong>缺点</strong>: 模型比PCA复杂，需要指定因子数量，结果可能存在旋转不唯一的问题。</li>
+<li><strong>关键要素</strong>: 因子载荷、公共因子、特殊因子、因子旋转。</li>
+</ul>
+<h4 id="39-线性回归-Linear-Regression"><a href="#39-线性回归-Linear-Regression" class="headerlink" title="39. 线性回归 (Linear Regression)"></a>39. 线性回归 (Linear Regression)</h4><ul>
+<li><strong>简介</strong>: 用线性关系模型来拟合一个或多个自变量（特征）与一个连续因变量（目标）之间的关系。</li>
+<li><strong>使用场景</strong>: 房价预测（根据面积、位置、房龄等预测房价）、销售额预测。</li>
+<li><strong>优点</strong>: 模型简单，易于理解和解释，是许多复杂模型的基础。</li>
+<li><strong>缺点</strong>: 只能拟合线性关系，对异常值敏感，要求自变量间无多重共线性。</li>
+<li><strong>关键要素</strong>: 回归系数、截距、残差、决定系数R²。</li>
+</ul>
+<h4 id="40-多项式回归-Polynomial-Regression"><a href="#40-多项式回归-Polynomial-Regression" class="headerlink" title="40. 多项式回归 (Polynomial Regression)"></a>40. 多项式回归 (Polynomial Regression)</h4><ul>
+<li><strong>简介</strong>: 线性回归的扩展，通过引入自变量的高次项（如x², x³）来拟合非线性关系。</li>
+<li><strong>使用场景</strong>: 当散点图显示变量间存在明显的曲线关系时。</li>
+<li><strong>优点</strong>: 能拟合非线性数据，扩展了线性回归的应用范围。</li>
+<li><strong>缺点</strong>: 阶数选择困难，高阶多项式容易导致过拟合。</li>
+<li><strong>关键要素</strong>: 多项式的阶数。</li>
+</ul>
+<h4 id="41-岭回归-Lasso回归-Ridge-Lasso-Regression"><a href="#41-岭回归-Lasso回归-Ridge-Lasso-Regression" class="headerlink" title="41. 岭回归&#x2F;Lasso回归 (Ridge&#x2F;Lasso Regression)"></a>41. 岭回归&#x2F;Lasso回归 (Ridge&#x2F;Lasso Regression)</h4><ul>
+<li><strong>简介</strong>: 带有正则化项的线性回归，用于处理多重共线性问题和进行特征选择。</li>
+<li><strong>使用场景</strong>: 当数据集中自变量数量多且彼此高度相关时。</li>
+<li><strong>优点</strong>: <strong>岭回归</strong>能有效处理多重共线性；<strong>Lasso回归</strong>能进行特征选择，将不重要的变量系数压缩至0。</li>
+<li><strong>缺点</strong>: 正则化参数λ的选择对模型性能至关重要。</li>
+<li><strong>关键要素</strong>: 正则化参数（λ或α）。</li>
+</ul>
+<h4 id="42-逻辑回归-Logistic-Regression"><a href="#42-逻辑回归-Logistic-Regression" class="headerlink" title="42. 逻辑回归 (Logistic Regression)"></a>42. 逻辑回归 (Logistic Regression)</h4><ul>
+<li><strong>简介</strong>: 用于预测一个二分类（或多分类）因变量的概率。</li>
+<li><strong>使用场景</strong>: 信用评分（判断是否违约）、医疗诊断（判断是否患病）、点击率预测。</li>
+<li><strong>优点</strong>: 输出结果是概率，易于理解；模型简单高效，解释性强。</li>
+<li><strong>缺点</strong>: 拟合能力有限，无法处理复杂的非线性关系。</li>
+<li><strong>关键要素</strong>: Sigmoid函数、对数似然损失函数。</li>
+</ul>
+<h4 id="43-泊松分布-回归-Poisson-Distribution-Regression"><a href="#43-泊松分布-回归-Poisson-Distribution-Regression" class="headerlink" title="43. 泊松分布&#x2F;回归 (Poisson Distribution&#x2F;Regression)"></a>43. 泊松分布&#x2F;回归 (Poisson Distribution&#x2F;Regression)</h4><ul>
+<li><strong>简介</strong>: 泊松分布用于描述单位时间（或空间）内随机事件发生的次数。泊松回归则用于预测这类“计数”数据。</li>
+<li><strong>使用场景</strong>: 预测一小时内到达某呼叫中心的电话数、预测某路段一天内的交通事故数。</li>
+<li><strong>优点</strong>: 专门用于对计数数据建模。</li>
+<li><strong>缺点</strong>: 要求事件的发生是独立的，且平均发生率恒定。</li>
+<li><strong>关键要素</strong>: 事件发生率（λ）。</li>
+</ul>
+<h4 id="44-贝叶斯定理-网络-Bayesian-Theorem-Network"><a href="#44-贝叶斯定理-网络-Bayesian-Theorem-Network" class="headerlink" title="44. 贝叶斯定理&#x2F;网络 (Bayesian Theorem&#x2F;Network)"></a>44. 贝叶斯定理&#x2F;网络 (Bayesian Theorem&#x2F;Network)</h4><ul>
+<li><strong>简介</strong>: 贝叶斯定理描述了在获得新证据后，如何更新一个事件的先验概率以得到后验概率。贝叶斯网络则是将变量及其条件依赖关系表示为一个有向无环图。</li>
+<li><strong>使用场景</strong>: 垃圾邮件过滤、医疗诊断（根据症状更新患病概率）、风险分析。</li>
+<li><strong>优点</strong>: 能有机地融合先验知识和数据，适合增量学习。</li>
+<li><strong>缺点</strong>: 先验概率的选择对结果影响大且带有主观性。当变量多时，网络结构和条件概率表非常复杂。</li>
+<li><strong>关键要素</strong>: 先验概率、后验概率、似然、条件概率表。</li>
+</ul>
+<h4 id="45-马尔可夫链-Markov-Chain"><a href="#45-马尔可夫链-Markov-Chain" class="headerlink" title="45. 马尔可夫链 (Markov Chain)"></a>45. 马尔可夫链 (Markov Chain)</h4><ul>
+<li><strong>简介</strong>: 一种数学模型，用于描述一个系统从一个状态转移到另一个状态的随机过程。其核心特性是“无后效性”，即未来状态只取决于当前状态，与过去状态无关。</li>
+<li><strong>使用场景</strong>: 预测天气状态的转移、分析顾客在不同品牌间的转换行为、网页排名（PageRank算法的基础）。</li>
+<li><strong>优点</strong>: 模型结构简单，能很好地描述具有状态转移特性的系统。</li>
+<li><strong>缺点</strong>: “无后效性”的假设在现实中可能过于苛刻。</li>
+<li><strong>关键要素</strong>: 状态空间、状态转移概率矩阵。</li>
+</ul>
+<hr>
+<h3 id="预测与时序模型-Prediction-Time-Series-Models"><a href="#预测与时序模型-Prediction-Time-Series-Models" class="headerlink" title="预测与时序模型 (Prediction &amp; Time Series Models)"></a><strong>预测与时序模型 (Prediction &amp; Time Series Models)</strong></h3><h4 id="46-移动平均法-Moving-Average-MA"><a href="#46-移动平均法-Moving-Average-MA" class="headerlink" title="46. 移动平均法 (Moving Average, MA)"></a>46. 移动平均法 (Moving Average, MA)</h4><ul>
+<li><strong>简介</strong>: 通过计算时间序列数据中最近N个周期的滚动平均值，来平滑数据并预测下一期的值。</li>
+<li><strong>使用场景</strong>: 简单的短期销售预测、库存管理。</li>
+<li><strong>优点</strong>: 非常简单，易于理解和计算。</li>
+<li><strong>缺点</strong>: 对趋势变化反应滞后，无法处理趋势和季节性，预测能力有限。</li>
+<li><strong>关键要素</strong>: 窗口大小N。</li>
+</ul>
+<h4 id="47-指数平滑-Exponential-Smoothing-ES"><a href="#47-指数平滑-Exponential-Smoothing-ES" class="headerlink" title="47. 指数平滑 (Exponential Smoothing, ES)"></a>47. 指数平滑 (Exponential Smoothing, ES)</h4><ul>
+<li><strong>简介</strong>: 一种加权平均方法，对历史数据赋予递减的权重（越近的数据权重越高）。</li>
+<li><strong>使用场景</strong>:<ul>
+<li><strong>简单指数平滑 (SES)</strong>: 用于没有趋势和季节性的序列。</li>
+<li><strong>Holt线性趋势法</strong>: 用于有趋势但没有季节性的序列。</li>
+<li><strong>Holt-Winters法</strong>: 用于既有趋势又有季节性的序列。</li>
+</ul>
+</li>
+<li><strong>优点</strong>: 比移动平均更灵活，对近期数据更敏感，能处理趋势和季节性。</li>
+<li><strong>缺点</strong>: 参数选择（平滑系数α, β, γ）对结果影响大。</li>
+<li><strong>关键要素</strong>: 平滑系数（α, β, γ）、初始值。</li>
+</ul>
+<h4 id="48-ARIMA模型-Autoregressive-Integrated-Moving-Average"><a href="#48-ARIMA模型-Autoregressive-Integrated-Moving-Average" class="headerlink" title="48. ARIMA模型 (Autoregressive Integrated Moving Average)"></a>48. ARIMA模型 (Autoregressive Integrated Moving Average)</h4><ul>
+<li><strong>简介</strong>: 经典的时间序列预测模型，它将一个非平稳的时间序列通过差分（Integrated）转化为平稳序列，然后用自回归（AR）和移动平均（MA）部分来描述该平稳序列。</li>
+<li><strong>使用场景</strong>: 股票价格、经济指标（GDP、CPI）、交通流量等时间序列数据的预测。</li>
+<li><strong>优点</strong>: 理论体系完善，是许多复杂时序模型的基础。</li>
+<li><strong>缺点</strong>: 要求序列必须是平稳的（或可通过差分平稳），只能捕捉线性关系。</li>
+<li><strong>关键要素</strong>: AR阶数(p)、差分阶数(d)、MA阶数(q)。</li>
+</ul>
+<h4 id="49-SARIMA模型-Seasonal-ARIMA"><a href="#49-SARIMA模型-Seasonal-ARIMA" class="headerlink" title="49. SARIMA模型 (Seasonal ARIMA)"></a>49. SARIMA模型 (Seasonal ARIMA)</h4><ul>
+<li><strong>简介</strong>: 季节性ARIMA模型，是ARIMA模型的扩展，增加了对数据中季节性变化的处理。</li>
+<li><strong>使用场景</strong>: 零售销售额（有年度周期）、电力消耗（有日度和年度周期）、旅游人数等具有明显季节性的时间序列。</li>
+<li><strong>优点</strong>: 能有效捕捉和预测序列中的季节性模式。</li>
+<li><strong>缺点</strong>: 模型参数更多（P, D, Q, m），定阶更复杂。</li>
+<li><strong>关键要素</strong>: 非季节性参数(p, d, q)和季节性参数(P, D, Q, m)。</li>
+</ul>
+<h4 id="50-ARCH-GARCH模型-Autoregressive-Conditional-Heteroskedasticity"><a href="#50-ARCH-GARCH模型-Autoregressive-Conditional-Heteroskedasticity" class="headerlink" title="50. ARCH&#x2F;GARCH模型 (Autoregressive Conditional Heteroskedasticity)"></a>50. ARCH&#x2F;GARCH模型 (Autoregressive Conditional Heteroskedasticity)</h4><ul>
+<li><strong>简介</strong>: 用于建模和预测时间序列波动性（方差）的模型。它认为序列当前的方差依赖于过去的残差平方。GARCH是其扩展。</li>
+<li><strong>使用场景</strong>: 金融时间序列分析，如股票收益率的波动性预测、风险管理（计算VaR）。</li>
+<li><strong>优点</strong>: 能很好地刻画金融市场中的“波动聚集”现象（即大的波动后倾向于跟随着大的波动）。</li>
+<li><strong>缺点</strong>: 模型较为复杂，主要用于波动率建模而非均值预测。</li>
+<li><strong>关键要素</strong>: ARCH项的阶数(p)、GARCH项的阶数(q)。</li>
+</ul>
+<h4 id="51-灰色预测-GM-1-1"><a href="#51-灰色预测-GM-1-1" class="headerlink" title="51. 灰色预测 (GM(1,1))"></a>51. 灰色预测 (GM(1,1))</h4><ul>
+<li><strong>简介</strong>: 通过对少量原始数据进行累加生成新的、规律性更强的序列，并对新序列建立微分方程模型来进行预测。</li>
+<li><strong>使用场景</strong>: “少数据”（通常4-10个数据点）、“贫信息”情况下的短期趋势预测。如预测某个新兴产品的短期产量。</li>
+<li><strong>优点</strong>: <strong>对小样本数据效果好</strong>，不要求数据分布，计算简单。</li>
+<li><strong>缺点</strong>: 只适用于近似指数增长的序列，中长期预测精度差。</li>
+<li><strong>关键要素</strong>: 累加生成（AGO）、背景值构造、微分方程参数求解、累减还原。</li>
+</ul>
+<h4 id="52-Prophet模型"><a href="#52-Prophet模型" class="headerlink" title="52. Prophet模型"></a>52. Prophet模型</h4><ul>
+<li><strong>简介</strong>: 由Facebook开源的一个易用且强大的时间序列预测工具。它将时间序列分解为趋势项、季节性项和节假日项。</li>
+<li><strong>使用场景</strong>: 商业预测，尤其是具有多重季节性（年、周、日）和节假日效应的数据，如网站流量、销售预测。</li>
+<li><strong>优点</strong>: 使用简单，无需深厚的时序知识；能自动处理节假日效应和季节性；对缺失值和异常值稳健。</li>
+<li><strong>缺点</strong>: “自动化”的代价是可解释性不如ARIMA等传统模型强，更像一个“黑箱”。</li>
+<li><strong>关键要素</strong>: 趋势模型（分段线性或逻辑回归）、季节性（傅里叶级数）、节假日列表。</li>
+</ul>
+<h4 id="53-向量自回归-VAR-Vector-Autoregression"><a href="#53-向量自回归-VAR-Vector-Autoregression" class="headerlink" title="53. 向量自回归(VAR) (Vector Autoregression)"></a>53. 向量自回归(VAR) (Vector Autoregression)</h4><ul>
+<li><strong>简介</strong>: 一种多变量时间序列预测模型。它将系统中的每个变量都视为所有变量的滞后项的函数，从而捕捉变量间的动态影响。</li>
+<li><strong>使用场景</strong>: 宏观经济分析，如分析利率、通货膨胀率和GDP增长率之间的相互动态关系。</li>
+<li><strong>优点</strong>: 能捕捉多个时间序列之间的联动关系，不仅能预测，还能做脉冲响应分析和格兰杰因果检验。</li>
+<li><strong>缺点</strong>: 模型所需的参数数量随变量和滞后阶数的增加而爆炸式增长，容易出现过拟合。</li>
+<li><strong>关键要素</strong>: 变量、滞后阶数。</li>
+</ul>
+<h4 id="54-状态空间模型-State-Space-Models"><a href="#54-状态空间模型-State-Space-Models" class="headerlink" title="54. 状态空间模型 (State-Space Models)"></a>54. 状态空间模型 (State-Space Models)</h4><ul>
+<li><strong>简介</strong>: 一种非常灵活和通用的时间序列建模框架。它假设观测到的时间序列是由一个不可观测的、潜在的“状态”变量生成的。</li>
+<li><strong>使用场景</strong>: 几乎所有时间序列模型（如ARIMA, 指数平滑）都可以表示为状态空间形式。也用于信号处理、动态系统控制。</li>
+<li><strong>优点</strong>: 框架极具通用性，能处理缺失值，并能有机地融合多种模式（趋势、季节性、周期性）。</li>
+<li><strong>缺点</strong>: 模型定义和估计相对复杂。</li>
+<li><strong>关键要素</strong>: 状态方程（描述潜在状态如何演化）、观测方程（描述如何从潜在状态生成观测值）。</li>
+</ul>
+<h4 id="55-卡尔曼滤波-Kalman-Filter"><a href="#55-卡尔曼滤波-Kalman-Filter" class="headerlink" title="55. 卡尔曼滤波 (Kalman Filter)"></a>55. 卡尔曼滤波 (Kalman Filter)</h4><ul>
+<li><strong>简介</strong>: 在线性高斯状态空间模型假设下，用于估计动态系统最优状态的递推算法。它通过“预测”和“更新”两个步骤，在含噪声的测量数据中不断修正对系统状态的估计。</li>
+<li><strong>使用场景</strong>: 导航系统（如GPS）、无人机姿态估计、信号处理、经济学预测。</li>
+<li><strong>优点</strong>: 计算高效（是递推算法），在线实时应用效果好，理论最优。</li>
+<li><strong>缺点</strong>: 只适用于线性和高斯噪声的系统。对于非线性系统，需要使用扩展卡尔曼滤波（EKF）或无迹卡尔曼滤波（UKF）。</li>
+<li><strong>关键要素</strong>: 状态转移矩阵、观测矩阵、过程噪声协方差、测量噪声协方差。</li>
+</ul>
+<h4 id="56-灾变理论-Catastrophe-Theory"><a href="#56-灾变理论-Catastrophe-Theory" class="headerlink" title="56. 灾变理论 (Catastrophe Theory)"></a>56. 灾变理论 (Catastrophe Theory)</h4><ul>
+<li><strong>简介</strong>: 研究系统从一个稳定状态到另一个稳定状态的“突变”或“跳跃”现象的数学理论。</li>
+<li><strong>使用场景</strong>: 用于解释和预测如桥梁的突然坍塌、市场的突然崩溃、细胞的分化、人的情绪从平静到暴怒的转变等不连续的突变行为。</li>
+<li><strong>优点</strong>: 为理解“渐变导致突变”的现象提供了数学框架。</li>
+<li><strong>缺点</strong>: 偏向于定性解释，定量预测能力有限，模型应用难度大。</li>
+<li><strong>关键要素</strong>: 状态变量、控制变量、势函数、奇点。</li>
+</ul>
+<hr>
+<h3 id="机器学习模型-Machine-Learning-Models"><a href="#机器学习模型-Machine-Learning-Models" class="headerlink" title="机器学习模型 (Machine Learning Models)"></a><strong>机器学习模型 (Machine Learning Models)</strong></h3><h4 id="57-K-Means聚类-K-Means-Clustering"><a href="#57-K-Means聚类-K-Means-Clustering" class="headerlink" title="57. K-Means聚类 (K-Means Clustering)"></a>57. K-Means聚类 (K-Means Clustering)</h4><ul>
+<li><strong>简介</strong>: 一种无监督学习算法，旨在将给定的数据集自动划分为K个类别（簇）。</li>
+<li><strong>使用场景</strong>: 客户分群、图像分割。</li>
+<li><strong>优点</strong>: 算法简单，处理大规模数据集时效率高。</li>
+<li><strong>缺点</strong>: 需要预先指定簇的数量K；对初始簇中心敏感；对非球形的簇和异常值处理效果不佳。</li>
+<li><strong>关键要素</strong>: K值、距离度量（通常是欧氏距离）、簇中心。</li>
+</ul>
+<h4 id="58-层次聚类-Hierarchical-Clustering"><a href="#58-层次聚类-Hierarchical-Clustering" class="headerlink" title="58. 层次聚类 (Hierarchical Clustering)"></a>58. 层次聚类 (Hierarchical Clustering)</h4><ul>
+<li><strong>简介</strong>: 通过构建一个树状的聚类结构（谱系图）来进行聚类。分为凝聚型（自下而上）和分裂型（自上而下）。</li>
+<li><strong>使用场景</strong>: 生物学中的物种分类、社交网络分析。</li>
+<li><strong>优点</strong>: 无需预设聚类数，聚类结果以树状图呈现，易于理解。</li>
+<li><strong>缺点</strong>: 计算复杂度高（至少O(n²)），对大数据集不适用。</li>
+<li><strong>关键要素</strong>: 距离度量、簇间合并&#x2F;分裂的准则（如ward, average, complete linkage）。</li>
+</ul>
+<h4 id="59-DBSCAN-Density-Based-Spatial-Clustering-of-Applications-with-Noise"><a href="#59-DBSCAN-Density-Based-Spatial-Clustering-of-Applications-with-Noise" class="headerlink" title="59. DBSCAN (Density-Based Spatial Clustering of Applications with Noise)"></a>59. DBSCAN (Density-Based Spatial Clustering of Applications with Noise)</h4><ul>
+<li><strong>简介</strong>: 一种基于密度的聚类算法。它将足够“拥挤”的区域划为簇，并能发现任意形状的簇，同时将稀疏区域的数据点识别为噪声。</li>
+<li><strong>使用场景</strong>: 识别任意形状的聚类、处理含噪声的数据、空间数据分析。</li>
+<li><strong>优点</strong>: 无需指定簇数，能发现任意形状的簇，对噪声不敏感。</li>
+<li><strong>缺点</strong>: 对密度变化大的数据集效果不佳，对高维数据效果差（维度灾难）。</li>
+<li><strong>关键要素</strong>: 邻域半径(ε)、最小点数(MinPts)。</li>
+</ul>
+<h4 id="60-支持向量机-Support-Vector-Machine-SVM"><a href="#60-支持向量机-Support-Vector-Machine-SVM" class="headerlink" title="60. 支持向量机 (Support Vector Machine, SVM)"></a>60. 支持向量机 (Support Vector Machine, SVM)</h4><ul>
+<li><strong>简介</strong>: 一种强大的监督学习模型，用于分类和回归。其核心思想是在特征空间中找到一个能将不同类别样本分隔开的最佳超平面，使得两类样本到该超平面的间隔（Margin）最大。</li>
+<li><strong>使用场景</strong>: 文本分类、图像识别、生物信息学。</li>
+<li><strong>优点</strong>: 在高维空间中表现优异，特别适合小样本、非线性问题；泛化能力强。</li>
+<li><strong>缺点</strong>: 对大规模数据集训练速度慢；对缺失数据敏感；核函数和参数的选择对结果影响很大。</li>
+<li><strong>关键要素</strong>: 核函数（线性、多项式、RBF）、惩罚参数C、间隔（Margin）。</li>
+</ul>
+<h4 id="61-K-近邻-K-Nearest-Neighbors-KNN"><a href="#61-K-近邻-K-Nearest-Neighbors-KNN" class="headerlink" title="61. K-近邻 (K-Nearest Neighbors, KNN)"></a>61. K-近邻 (K-Nearest Neighbors, KNN)</h4><ul>
+<li><strong>简介</strong>: 一种非常简单的监督学习算法。对于一个新的样本，它通过在训练集中寻找离它最近的K个邻居，并根据这K个邻居的类别进行投票（分类）或取平均值（回归）来做出预测。</li>
+<li><strong>使用场景</strong>: 分类问题、推荐系统（找到相似的用户或物品）。</li>
+<li><strong>优点</strong>: 思想简单，无需训练阶段，易于实现。</li>
+<li><strong>缺点</strong>: 预测时计算量大（需要计算与所有训练样本的距离）；对样本不均衡的数据敏感；对K值的选择和距离度量敏感。</li>
+<li><strong>关键要素</strong>: K值、距离度量（如欧氏距离、曼哈顿距离）。</li>
+</ul>
+<h4 id="62-朴素贝叶斯-Naive-Bayes"><a href="#62-朴素贝叶斯-Naive-Bayes" class="headerlink" title="62. 朴素贝叶斯 (Naive Bayes)"></a>62. 朴素贝叶斯 (Naive Bayes)</h4><ul>
+<li><strong>简介</strong>: 基于贝叶斯定理和特征条件独立性假设的分类器。它“朴素”地假设所有特征之间都是相互独立的。</li>
+<li><strong>使用场景</strong>: 文本分类（如垃圾邮件过滤）、情感分析。</li>
+<li><strong>优点</strong>: 算法简单，计算高效，在数据量较小的情况下依然表现良好。</li>
+<li><strong>缺点</strong>: “特征条件独立”的假设在现实中往往不成立，这会影响其预测精度。</li>
+<li><strong>关键要素</strong>: 先验概率、条件概率。</li>
+</ul>
+<h4 id="63-决策树-Decision-Tree"><a href="#63-决策树-Decision-Tree" class="headerlink" title="63. 决策树 (Decision Tree)"></a>63. 决策树 (Decision Tree)</h4><ul>
+<li><strong>简介</strong>: 一种树状结构的预测模型，其中每个内部节点代表对一个特征的测试，每个分支代表一个测试输出，每个叶节点代表一个类别标签（分类树）或一个数值（回归树）。</li>
+<li><strong>使用场景</strong>: 分类问题、医疗诊断。</li>
+<li><strong>优点</strong>: <strong>模型直观，易于解释</strong>，符合人类的决策思维。能够处理数值型和类别型数据。</li>
+<li><strong>缺点</strong>: <strong>非常容易过拟合</strong>，生成的树可能过于复杂。对输入数据中的微小变化很敏感。</li>
+<li><strong>关键要素</strong>: 特征选择（如信息增益、基尼不纯度）、树的生成、剪枝（防止过拟合）。</li>
+</ul>
+<h4 id="64-随机森林-Random-Forest-RF"><a href="#64-随机森林-Random-Forest-RF" class="headerlink" title="64. 随机森林 (Random Forest, RF)"></a>64. 随机森林 (Random Forest, RF)</h4><ul>
+<li><strong>简介</strong>: 一种集成学习算法，通过构建并组合大量的决策树来做出预测。它通过对样本和特征的随机采样，解决了单棵决策树容易过拟合的问题。</li>
+<li><strong>使用场景</strong>: 金融风控、医疗诊断、推荐系统等各种高精度的分类和回归任务。</li>
+<li><strong>优点</strong>: 预测精度高，泛化能力强，能有效防止过拟合；能处理高维数据并评估特征重要性。</li>
+<li><strong>缺点</strong>: 模型是“黑箱”，解释性差；对于某些噪声较大的数据容易过拟合。</li>
+<li><strong>关键要素</strong>: 决策树数量、自助采样法（Bootstrap）、随机特征选择。</li>
+</ul>
+<h4 id="65-梯度提升机-Gradient-Boosting-Machine-GBM"><a href="#65-梯度提升机-Gradient-Boosting-Machine-GBM" class="headerlink" title="65. 梯度提升机 (Gradient Boosting Machine, GBM)"></a>65. 梯度提升机 (Gradient Boosting Machine, GBM)</h4><ul>
+<li><strong>简介</strong>: 一种集成学习算法，它通过迭代地训练一系列弱学习器（通常是决策树），每一棵树都致力于修正前面所有树留下的残差（误差）。</li>
+<li><strong>使用场景</strong>: 分类和回归任务，特别是在追求高精度时。</li>
+<li><strong>优点</strong>: 预测精度通常很高。</li>
+<li><strong>缺点</strong>: 训练过程是串行的，难以并行，速度较慢；对参数设置敏感，容易过拟合。</li>
+<li><strong>关键要素</strong>: 损失函数、学习率、树的数量和深度。</li>
+</ul>
+<h4 id="66-XGBoost-LightGBM"><a href="#66-XGBoost-LightGBM" class="headerlink" title="66. XGBoost&#x2F;LightGBM"></a>66. XGBoost&#x2F;LightGBM</h4><ul>
+<li><strong>简介</strong>: 梯度提升决策树（GBDT&#x2F;GBM）的高效工程实现，通过各种优化（如二阶泰勒展开、并行化、缓存优化等）大大提升了训练速度和性能。</li>
+<li><strong>使用场景</strong>: 几乎所有的结构化数据（表格数据）的分类和回归任务，是数据科学竞赛中的“大杀器”。</li>
+<li><strong>优点</strong>: 精度极高；训练速度快（尤其是LightGBM）；支持并行计算；内置交叉验证和正则化，能有效控制过拟合。</li>
+<li><strong>缺点</strong>: 参数众多，调参复杂；模型可解释性差。</li>
+<li><strong>关键要素</strong>: 学习率、树的数量、树的深度、正则化项。</li>
+</ul>
+<h4 id="67-人工神经网络-Artificial-Neural-Network-ANN"><a href="#67-人工神经网络-Artificial-Neural-Network-ANN" class="headerlink" title="67. 人工神经网络(Artificial Neural Network, ANN)"></a>67. 人工神经网络(Artificial Neural Network, ANN)</h4><ul>
+<li><strong>简介</strong>: 模拟人脑神经元网络结构的计算模型。由大量的、相互连接的“神经元”（节点）组成，通过学习数据中的模式来进行预测。</li>
+<li><strong>使用场景</strong>: 模式识别、函数逼近、分类与回归。</li>
+<li><strong>优点</strong>: 学习能力和非线性拟合能力极强。</li>
+<li><strong>缺点</strong>: “黑箱”模型，难以解释；容易过拟合；需要大量数据和计算资源进行训练。</li>
+<li><strong>关键要素</strong>: 网络结构（层数、神经元数）、激活函数、损失函数、优化器。</li>
+</ul>
+<h4 id="68-卷积神经网络-Convolutional-Neural-Network-CNN"><a href="#68-卷积神经网络-Convolutional-Neural-Network-CNN" class="headerlink" title="68. 卷积神经网络 (Convolutional Neural Network, CNN)"></a>68. 卷积神经网络 (Convolutional Neural Network, CNN)</h4><ul>
+<li><strong>简介</strong>: 一种专门处理具有网格状拓扑结构数据（如图像）的深度学习模型。它通过卷积层和池化层，能够有效地提取数据中的空间层次特征。</li>
+<li><strong>使用场景</strong>: <strong>图像识别</strong>、物体检测、图像分割、人脸识别。</li>
+<li><strong>优点</strong>: 权值共享和局部连接的特性大大减少了模型参数，使其在处理高维图像时非常高效且强大。</li>
+<li><strong>缺点</strong>: 主要适用于网格状数据，对于序列数据或表格数据效果不佳。</li>
+<li><strong>关键要素</strong>: 卷积层、池化层、激活函数、全连接层。</li>
+</ul>
+<h4 id="69-循环神经网络-Recurrent-Neural-Network-RNN"><a href="#69-循环神经网络-Recurrent-Neural-Network-RNN" class="headerlink" title="69. 循环神经网络 (Recurrent Neural Network, RNN)"></a>69. 循环神经网络 (Recurrent Neural Network, RNN)</h4><ul>
+<li><strong>简介</strong>: 一种专门处理序列数据的神经网络。其网络结构中包含“循环”连接，使得信息可以在时间步之间传递，从而让模型具有“记忆”功能。</li>
+<li><strong>使用场景</strong>: 自然语言处理（文本生成、机器翻译）、语音识别、时间序列预测。</li>
+<li><strong>优点</strong>: 能处理变长的序列输入，并能捕捉序列中的时间依赖关系。</li>
+<li><strong>缺点</strong>: 存在“长期依赖”问题和梯度消失&#x2F;爆炸问题，难以学习到序列中距离较远的信息。</li>
+<li><strong>关键要素</strong>: 循环单元、隐藏状态。</li>
+</ul>
+<h4 id="70-LSTM-GRU-Long-Short-Term-Memory-Gated-Recurrent-Unit"><a href="#70-LSTM-GRU-Long-Short-Term-Memory-Gated-Recurrent-Unit" class="headerlink" title="70. LSTM&#x2F;GRU (Long Short-Term Memory &#x2F; Gated Recurrent Unit)"></a>70. LSTM&#x2F;GRU (Long Short-Term Memory &#x2F; Gated Recurrent Unit)</h4><ul>
+<li><strong>简介</strong>: RNN的两种流行变体，专门为了解决RNN的长期依赖问题而设计。它们通过引入“门控机制”（如遗忘门、输入门、输出门）来有选择地让信息通过，从而更好地学习长期模式。</li>
+<li><strong>使用场景</strong>: 所有RNN适用的场景，但通常性能更好，是目前处理序列数据的标准模型。</li>
+<li><strong>优点</strong>: 极大地缓解了梯度消失问题，能有效学习长距离依赖。</li>
+<li><strong>缺点</strong>: 模型结构比RNN更复杂，计算成本更高。</li>
+<li><strong>关键要素</strong>: 门控单元（遗忘门、输入门、输出门）。</li>
+</ul>
+<h4 id="71-Transformer"><a href="#71-Transformer" class="headerlink" title="71. Transformer"></a>71. Transformer</h4><ul>
+<li><strong>简介</strong>: 一种基于“自注意力机制”（Self-Attention）的深度学习模型，最初用于自然语言处理。它完全摒弃了RNN的循环结构，实现了完全并行的计算。</li>
+<li><strong>使用场景</strong>: <strong>自然语言处理</strong>（机器翻译、文本摘要、问答系统，如BERT, GPT的基础）、计算机视觉。</li>
+<li><strong>优点</strong>: 并行计算能力强，训练速度快；自注意力机制能更好地捕捉全局和长距离依赖。</li>
+<li><strong>缺点</strong>: 模型巨大，需要极大的计算资源和数据量；对于特别长的序列，计算量呈平方级增长。</li>
+<li><strong>关键要素</strong>: 自注意力机制、多头注意力、位置编码。</li>
+</ul>
+<h4 id="72-Q-Learning"><a href="#72-Q-Learning" class="headerlink" title="72. Q-Learning"></a>72. Q-Learning</h4><ul>
+<li><strong>简介</strong>: 一种经典的、无模型的强化学习算法。它让一个智能体（Agent）在环境中不断尝试，通过奖励和惩罚来学习一张Q表（Quality Table），这张表告诉智能体在每个状态下执行哪个动作能获得最大的长期回报。</li>
+<li><strong>使用场景</strong>: 简单的路径规划、游戏AI（如走迷宫）。</li>
+<li><strong>优点</strong>: 算法简单，易于理解，是强化学习的入门基础。</li>
+<li><strong>缺点</strong>: 只能处理离散的、有限的状态和动作空间，对于状态空间大的问题会产生“维度灾难”。</li>
+<li><strong>关键要素</strong>: 状态、动作、奖励、Q表、学习率(α)、折扣因子(γ)。</li>
+</ul>
+<h4 id="73-Agent-Based-Modeling-ABM"><a href="#73-Agent-Based-Modeling-ABM" class="headerlink" title="73. Agent-Based Modeling (ABM)"></a>73. Agent-Based Modeling (ABM)</h4><ul>
+<li><strong>简介</strong>: 一种通过模拟大量自主智能体（Agent）的行为及其相互作用，来观察和研究整个系统宏观现象的建模方法。</li>
+<li><strong>使用场景</strong>: 模拟传染病传播、交通流、金融市场动态、社会舆论形成等复杂系统。</li>
+<li><strong>优点</strong>: 自下而上的建模思路，能捕捉到由简单个体行为涌现出的复杂宏观现象，非常直观。</li>
+<li><strong>缺点</strong>: 模型结果难以进行严格的数学验证；对Agent行为规则的设定非常敏感。</li>
+<li><strong>关键要素</strong>: 智能体（Agent）、环境（Environment）、规则（Rules）。</li>
+</ul>
+<hr>
+<h3 id="图与网络模型-Graph-Network-Models"><a href="#图与网络模型-Graph-Network-Models" class="headerlink" title="图与网络模型 (Graph &amp; Network Models)"></a><strong>图与网络模型 (Graph &amp; Network Models)</strong></h3><h4 id="74-Dijkstra算法"><a href="#74-Dijkstra算法" class="headerlink" title="74. Dijkstra算法"></a>74. Dijkstra算法</h4><ul>
+<li><strong>简介</strong>: 一种经典的单源最短路径算法，用于计算图中一个节点到所有其他节点的最短路径。</li>
+<li><strong>使用场景</strong>: 地图导航（计算两点间最快路线）、网络路由（寻找最优路径）。</li>
+<li><strong>优点</strong>: 算法思想是贪心策略，直观且高效。</li>
+<li><strong>缺点</strong>: <strong>不能处理带有负权重边的图</strong>。</li>
+<li><strong>关键要素</strong>: 起点、邻接表&#x2F;矩阵、距离数组。</li>
+</ul>
+<h4 id="75-Floyd-Warshall算法"><a href="#75-Floyd-Warshall算法" class="headerlink" title="75. Floyd-Warshall算法"></a>75. Floyd-Warshall算法</h4><ul>
+<li><strong>简介</strong>: 一种计算图中任意两点间最短路径的算法。</li>
+<li><strong>使用场景</strong>: 需要知道图中所有节点对之间最短路径的场景，如社交网络中任意两人之间的“距离”。</li>
+<li><strong>优点</strong>: 能够处理带有负权重边的图（但不能有负权环），算法实现简单。</li>
+<li><strong>缺点</strong>: 时间复杂度高（O(n³)），不适用于大规模图。</li>
+<li><strong>关键要素</strong>: 动态规划思想、距离矩阵。</li>
+</ul>
+<h4 id="76-A-搜索算法-A-Search-Algorithm"><a href="#76-A-搜索算法-A-Search-Algorithm" class="headerlink" title="76. A* 搜索算法 (A* Search Algorithm)"></a>76. A* 搜索算法 (A* Search Algorithm)</h4><ul>
+<li><strong>简介</strong>: 一种在图中寻找最短路径的启发式搜索算法。它在Dijkstra算法的基础上，增加了一个启发式函数（预估当前点到终点的距离），从而能更“智能”地朝向终点搜索。</li>
+<li><strong>使用场景</strong>: 游戏AI中的角色寻路、地图应用中的路径规划。</li>
+<li><strong>优点</strong>: 通常比Dijkstra算法效率高得多，因为它是有方向性地搜索。</li>
+<li><strong>缺点</strong>: 启发式函数的质量直接决定了算法的效率和准确性。</li>
+<li><strong>关键要素</strong>: g(n)（从起点到当前节点的实际代价）、h(n)（从当前节点到终点的预估代价）、f(n) &#x3D; g(n) + h(n)。</li>
+</ul>
+<h4 id="77-Prim-Kruskal算法"><a href="#77-Prim-Kruskal算法" class="headerlink" title="77. Prim&#x2F;Kruskal算法"></a>77. Prim&#x2F;Kruskal算法</h4><ul>
+<li><strong>简介</strong>: 两种经典的最小生成树（Minimum Spanning Tree, MST）算法。目标是在一个加权无向图中，找到一棵连接所有节点的、总权重最小的树。</li>
+<li><strong>使用场景</strong>: 网络建设（如铺设电缆、管道，使得总长度最短）、电路设计。</li>
+<li><strong>优点</strong>: 都是贪心算法，实现简单，能保证找到最优解。<strong>Prim</strong>适合稠密图，<strong>Kruskal</strong>适合稀疏图。</li>
+<li><strong>缺点</strong>: 只适用于无向图。</li>
+<li><strong>关键要素</strong>: <strong>Prim</strong>: 维护一个已连接节点的集合，每次选择离集合最近的节点加入。<strong>Kruskal</strong>: 按权重从小到大对所有边排序，依次加入，只要不形成环路即可。</li>
+</ul>
+<h4 id="78-PageRank算法"><a href="#78-PageRank算法" class="headerlink" title="78. PageRank算法"></a>78. PageRank算法</h4><ul>
+<li><strong>简介</strong>: 谷歌早期用于评估网页重要性的核心算法。它的基本思想是：一个网页被越多、越重要的其他网页链接，那么它本身也越重要。</li>
+<li><strong>使用场景</strong>: 网页排名、社交网络中识别影响力大的用户、学术论文引用网络中识别重要文献。</li>
+<li><strong>优点</strong>: 算法思想优雅，能有效衡量节点的“影响力”。</li>
+<li><strong>缺点</strong>: 容易受到“链接农场”等作弊手段的攻击。</li>
+<li><strong>关键要素</strong>: 链接关系、阻尼系数。</li>
+</ul>
+<h4 id="79-社区发现算法-Community-Detection"><a href="#79-社区发现算法-Community-Detection" class="headerlink" title="79. 社区发现算法 (Community Detection)"></a>79. 社区发现算法 (Community Detection)</h4><ul>
+<li><strong>简介</strong>: 一类用于在复杂网络中识别出“社区”结构的算法。社区是指网络中一些节点的集合，这些节点内部连接紧密，而与外部节点的连接相对稀疏。</li>
+<li><strong>使用场景</strong>: 社交网络分析（发现兴趣小组、朋友圈）、生物网络分析（识别功能模块）、推荐系统。</li>
+<li><strong>优点</strong>: 能揭示网络的宏观结构，帮助理解网络功能。</li>
+<li><strong>缺点</strong>: “社区”的定义本身模糊，不同算法可能得到完全不同的结果。</li>
+<li><strong>关键要素</strong>: 模块度（Modularity）、Louvain算法、Girvan-Newman算法。</li>
+</ul>
+<h4 id="80-网络中心性分析-Network-Centrality"><a href="#80-网络中心性分析-Network-Centrality" class="headerlink" title="80. 网络中心性分析 (Network Centrality)"></a>80. 网络中心性分析 (Network Centrality)</h4><ul>
+<li><strong>简介</strong>: 一组用于衡量网络中节点重要性或影响力的指标。</li>
+<li><strong>使用场景</strong>:<ul>
+<li><strong>度中心性</strong>: 识别网络中的“枢纽”（连接数最多的节点）。</li>
+<li><strong>介数中心性</strong>: 识别网络中的“桥梁”（位于许多其他节点对最短路径上的节点）。</li>
+<li><strong>紧密中心性</strong>: 识别网络中的“中心”（到所有其他节点的平均距离最短的节点）。</li>
+</ul>
+</li>
+<li><strong>优点</strong>: 提供了从不同角度量化节点重要性的方法。</li>
+<li><strong>缺点</strong>: 计算复杂度可能很高（尤其是介数中心性）。</li>
+<li><strong>关键要素</strong>: 邻接关系、最短路径。</li>
+</ul>
+<h4 id="81-PERT-CPM-项目评估与审查技术-关键路径法"><a href="#81-PERT-CPM-项目评估与审查技术-关键路径法" class="headerlink" title="81. PERT&#x2F;CPM (项目评估与审查技术&#x2F;关键路径法)"></a>81. PERT&#x2F;CPM (项目评估与审查技术&#x2F;关键路径法)</h4><ul>
+<li><strong>简介</strong>: 一套用于规划和管理大型复杂项目的技术，通过构建项目网络图来分析任务依赖关系和时间安排。</li>
+<li><strong>使用场景</strong>: 建筑工程、软件开发、新产品研发等任何有明确开始和结束日期的项目。</li>
+<li><strong>优点</strong>: 清晰地识别出项目中的“关键路径”（决定项目总工期的任务序列），帮助管理者集中资源、监控风险。</li>
+<li><strong>缺点</strong>: 对任务时间的估计准确性要求高，对不确定性处理能力有限。</li>
+<li><strong>关键要素</strong>: 活动（任务）、事件（里程碑）、持续时间、依赖关系、关键路径。</li>
+</ul>
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2026/01/06/CV%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/">CV算法学习路径</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/01/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%81%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%8E%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">机器学习、深度学习与强化学习</a></div></section></div>
+
+
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">Frost</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9E%8B%E9%80%9F%E6%9F%A5%E6%89%8B%E5%86%8C"><span class="toc-text">数学建模常用模型速查手册</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%9A%E6%A8%A1%E5%9E%8B%E9%80%9F%E6%9F%A5%E6%80%BB%E8%A1%A8"><span class="toc-text">第一部分：模型速查总表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E5%90%84%E6%A8%A1%E5%9E%8B%E8%AF%A6%E7%BB%86%E4%BB%8B%E7%BB%8D"><span class="toc-text">第二部分：各模型详细介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95-Optimization-Algorithms"><span class="toc-text">优化算法 (Optimization Algorithms)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92-Linear-Programming-LP"><span class="toc-text">1. 线性规划 (Linear Programming, LP)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E6%95%B4%E6%95%B0%E8%A7%84%E5%88%92-Integer-Programming-IP-MIP"><span class="toc-text">2. 整数规划 (Integer Programming, IP&#x2F;MIP)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-0-1%E8%A7%84%E5%88%92-0-1-Programming"><span class="toc-text">3. 0-1规划 (0-1 Programming)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E9%9D%9E%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92-Non-Linear-Programming-NLP"><span class="toc-text">4. 非线性规划 (Non-Linear Programming, NLP)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-Dynamic-Programming-DP"><span class="toc-text">5. 动态规划 (Dynamic Programming, DP)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-%E7%9B%AE%E6%A0%87%E8%A7%84%E5%88%92-Goal-Programming-GP"><span class="toc-text">6. 目标规划 (Goal Programming, GP)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-%E4%BA%8C%E6%AC%A1%E8%A7%84%E5%88%92-Quadratic-Programming-QP"><span class="toc-text">7. 二次规划 (Quadratic Programming, QP)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-%E9%9A%8F%E6%9C%BA%E8%A7%84%E5%88%92-Stochastic-Programming"><span class="toc-text">8. 随机规划 (Stochastic Programming)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-%E7%BD%91%E7%BB%9C%E6%B5%81%E6%A8%A1%E5%9E%8B-Network-Flow-Model"><span class="toc-text">9. 网络流模型 (Network Flow Model)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-%E6%97%85%E8%A1%8C%E5%95%86%E9%97%AE%E9%A2%98-Traveling-Salesman-Problem-TSP"><span class="toc-text">10. 旅行商问题 (Traveling Salesman Problem, TSP)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#11-%E8%BD%A6%E8%BE%86%E8%B7%AF%E5%BE%84%E9%97%AE%E9%A2%98-Vehicle-Routing-Problem-VRP"><span class="toc-text">11. 车辆路径问题 (Vehicle Routing Problem, VRP)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#12-%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95-Genetic-Algorithm-GA"><span class="toc-text">12. 遗传算法 (Genetic Algorithm, GA)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#13-%E6%A8%A1%E6%8B%9F%E9%80%80%E7%81%AB-Simulated-Annealing-SA"><span class="toc-text">13. 模拟退火 (Simulated Annealing, SA)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#14-%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95-Ant-Colony-Optimization-ACO"><span class="toc-text">14. 蚁群算法 (Ant Colony Optimization, ACO)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#15-%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95-Particle-Swarm-Optimization-PSO"><span class="toc-text">15. 粒子群算法 (Particle Swarm Optimization, PSO)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%84%E4%BB%B7%E4%B8%8E%E5%86%B3%E7%AD%96%E7%B1%BB%E6%A8%A1%E5%9E%8B-Evaluation-Decision-Models"><span class="toc-text">评价与决策类模型 (Evaluation &amp; Decision Models)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#16-%E5%B1%82%E6%AC%A1%E5%88%86%E6%9E%90%E6%B3%95-AHP"><span class="toc-text">16. 层次分析法 (AHP)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#17-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90%E6%B3%95-Analytic-Network-Process-ANP"><span class="toc-text">17. 网络分析法 (Analytic Network Process, ANP)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#18-TOPSIS%E6%B3%95-Technique-for-Order-of-Preference-by-Similarity-to-Ideal-Solution"><span class="toc-text">18. TOPSIS法 (Technique for Order of Preference by Similarity to Ideal Solution)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#19-VIKOR%E6%B3%95"><span class="toc-text">19. VIKOR法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#20-ELECTRE-ELimination-Et-Choix-Traduisant-la-REalite"><span class="toc-text">20. ELECTRE (ELimination Et Choix Traduisant la REalité)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#21-PROMETHEE-Preference-Ranking-Organization-METHod-for-Enrichment-of-Evaluations"><span class="toc-text">21. PROMETHEE (Preference Ranking Organization METHod for Enrichment of Evaluations)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#22-%E7%86%B5%E6%9D%83%E6%B3%95-Entropy-Weight-Method-EWM"><span class="toc-text">22. 熵权法 (Entropy Weight Method, EWM)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#23-CRITIC%E6%B3%95-CRiteria-Importance-Through-Intercriteria-Correlation"><span class="toc-text">23. CRITIC法 (CRiteria Importance Through Intercriteria Correlation)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#24-%E6%A8%A1%E7%B3%8A%E7%BB%BC%E5%90%88%E8%AF%84%E4%BB%B7-Fuzzy-Comprehensive-Evaluation"><span class="toc-text">24. 模糊综合评价 (Fuzzy Comprehensive Evaluation)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#25-%E7%81%B0%E8%89%B2%E5%85%B3%E8%81%94%E5%88%86%E6%9E%90-Grey-Relational-Analysis-GRA"><span class="toc-text">25. 灰色关联分析 (Grey Relational Analysis, GRA)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#26-DEMATEL-Decision-Making-Trial-and-Evaluation-Laboratory"><span class="toc-text">26. DEMATEL (Decision Making Trial and Evaluation Laboratory)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#27-%E6%95%B0%E6%8D%AE%E5%8C%85%E7%BB%9C%E5%88%86%E6%9E%90-Data-Envelopment-Analysis-DEA"><span class="toc-text">27. 数据包络分析 (Data Envelopment Analysis, DEA)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#28-%E6%88%90%E6%9C%AC%E6%95%88%E7%9B%8A%E5%88%86%E6%9E%90-Cost-Benefit-Analysis-CBA"><span class="toc-text">28. 成本效益分析 (Cost-Benefit Analysis, CBA)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#29-%E5%8D%9A%E5%BC%88%E8%AE%BA%E6%A8%A1%E5%9E%8B-Game-Theory-Models"><span class="toc-text">29. 博弈论模型 (Game Theory Models)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#30-%E6%95%88%E7%94%A8%E7%90%86%E8%AE%BA-Utility-Theory"><span class="toc-text">30. 效用理论 (Utility Theory)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9F%E8%AE%A1%E4%B8%8E%E6%A6%82%E7%8E%87%E6%A8%A1%E5%9E%8B-Statistics-Probability-Models"><span class="toc-text">统计与概率模型 (Statistics &amp; Probability Models)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#31-%E6%8F%8F%E8%BF%B0%E6%80%A7%E7%BB%9F%E8%AE%A1-Descriptive-Statistics"><span class="toc-text">31. 描述性统计 (Descriptive Statistics)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#32-%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C-Hypothesis-Testing"><span class="toc-text">32. 假设检验 (Hypothesis Testing)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#33-t%E6%A3%80%E9%AA%8C-t-test"><span class="toc-text">33. t检验 (t-test)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#34-%E6%96%B9%E5%B7%AE%E5%88%86%E6%9E%90-Analysis-of-Variance-ANOVA"><span class="toc-text">34. 方差分析 (Analysis of Variance, ANOVA)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#35-%E5%8D%A1%E6%96%B9%E6%A3%80%E9%AA%8C-Chi-Squared-Test"><span class="toc-text">35. 卡方检验 (Chi-Squared Test)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#36-%E7%9B%B8%E5%85%B3%E6%80%A7%E5%88%86%E6%9E%90-Correlation-Analysis"><span class="toc-text">36. 相关性分析 (Correlation Analysis)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#37-%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90-Principal-Component-Analysis-PCA"><span class="toc-text">37. 主成分分析 (Principal Component Analysis, PCA)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#38-%E5%9B%A0%E5%AD%90%E5%88%86%E6%9E%90-Factor-Analysis-FA"><span class="toc-text">38. 因子分析 (Factor Analysis, FA)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#39-%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92-Linear-Regression"><span class="toc-text">39. 线性回归 (Linear Regression)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#40-%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%9B%9E%E5%BD%92-Polynomial-Regression"><span class="toc-text">40. 多项式回归 (Polynomial Regression)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#41-%E5%B2%AD%E5%9B%9E%E5%BD%92-Lasso%E5%9B%9E%E5%BD%92-Ridge-Lasso-Regression"><span class="toc-text">41. 岭回归&#x2F;Lasso回归 (Ridge&#x2F;Lasso Regression)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#42-%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92-Logistic-Regression"><span class="toc-text">42. 逻辑回归 (Logistic Regression)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#43-%E6%B3%8A%E6%9D%BE%E5%88%86%E5%B8%83-%E5%9B%9E%E5%BD%92-Poisson-Distribution-Regression"><span class="toc-text">43. 泊松分布&#x2F;回归 (Poisson Distribution&#x2F;Regression)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#44-%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AE%9A%E7%90%86-%E7%BD%91%E7%BB%9C-Bayesian-Theorem-Network"><span class="toc-text">44. 贝叶斯定理&#x2F;网络 (Bayesian Theorem&#x2F;Network)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#45-%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E9%93%BE-Markov-Chain"><span class="toc-text">45. 马尔可夫链 (Markov Chain)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%84%E6%B5%8B%E4%B8%8E%E6%97%B6%E5%BA%8F%E6%A8%A1%E5%9E%8B-Prediction-Time-Series-Models"><span class="toc-text">预测与时序模型 (Prediction &amp; Time Series Models)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#46-%E7%A7%BB%E5%8A%A8%E5%B9%B3%E5%9D%87%E6%B3%95-Moving-Average-MA"><span class="toc-text">46. 移动平均法 (Moving Average, MA)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#47-%E6%8C%87%E6%95%B0%E5%B9%B3%E6%BB%91-Exponential-Smoothing-ES"><span class="toc-text">47. 指数平滑 (Exponential Smoothing, ES)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#48-ARIMA%E6%A8%A1%E5%9E%8B-Autoregressive-Integrated-Moving-Average"><span class="toc-text">48. ARIMA模型 (Autoregressive Integrated Moving Average)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#49-SARIMA%E6%A8%A1%E5%9E%8B-Seasonal-ARIMA"><span class="toc-text">49. SARIMA模型 (Seasonal ARIMA)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#50-ARCH-GARCH%E6%A8%A1%E5%9E%8B-Autoregressive-Conditional-Heteroskedasticity"><span class="toc-text">50. ARCH&#x2F;GARCH模型 (Autoregressive Conditional Heteroskedasticity)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#51-%E7%81%B0%E8%89%B2%E9%A2%84%E6%B5%8B-GM-1-1"><span class="toc-text">51. 灰色预测 (GM(1,1))</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#52-Prophet%E6%A8%A1%E5%9E%8B"><span class="toc-text">52. Prophet模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#53-%E5%90%91%E9%87%8F%E8%87%AA%E5%9B%9E%E5%BD%92-VAR-Vector-Autoregression"><span class="toc-text">53. 向量自回归(VAR) (Vector Autoregression)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#54-%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%A8%A1%E5%9E%8B-State-Space-Models"><span class="toc-text">54. 状态空间模型 (State-Space Models)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#55-%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2-Kalman-Filter"><span class="toc-text">55. 卡尔曼滤波 (Kalman Filter)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#56-%E7%81%BE%E5%8F%98%E7%90%86%E8%AE%BA-Catastrophe-Theory"><span class="toc-text">56. 灾变理论 (Catastrophe Theory)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B-Machine-Learning-Models"><span class="toc-text">机器学习模型 (Machine Learning Models)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#57-K-Means%E8%81%9A%E7%B1%BB-K-Means-Clustering"><span class="toc-text">57. K-Means聚类 (K-Means Clustering)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#58-%E5%B1%82%E6%AC%A1%E8%81%9A%E7%B1%BB-Hierarchical-Clustering"><span class="toc-text">58. 层次聚类 (Hierarchical Clustering)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#59-DBSCAN-Density-Based-Spatial-Clustering-of-Applications-with-Noise"><span class="toc-text">59. DBSCAN (Density-Based Spatial Clustering of Applications with Noise)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#60-%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA-Support-Vector-Machine-SVM"><span class="toc-text">60. 支持向量机 (Support Vector Machine, SVM)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#61-K-%E8%BF%91%E9%82%BB-K-Nearest-Neighbors-KNN"><span class="toc-text">61. K-近邻 (K-Nearest Neighbors, KNN)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#62-%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF-Naive-Bayes"><span class="toc-text">62. 朴素贝叶斯 (Naive Bayes)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#63-%E5%86%B3%E7%AD%96%E6%A0%91-Decision-Tree"><span class="toc-text">63. 决策树 (Decision Tree)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#64-%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97-Random-Forest-RF"><span class="toc-text">64. 随机森林 (Random Forest, RF)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#65-%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%9C%BA-Gradient-Boosting-Machine-GBM"><span class="toc-text">65. 梯度提升机 (Gradient Boosting Machine, GBM)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#66-XGBoost-LightGBM"><span class="toc-text">66. XGBoost&#x2F;LightGBM</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#67-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-Artificial-Neural-Network-ANN"><span class="toc-text">67. 人工神经网络(Artificial Neural Network, ANN)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#68-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-Convolutional-Neural-Network-CNN"><span class="toc-text">68. 卷积神经网络 (Convolutional Neural Network, CNN)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#69-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-Recurrent-Neural-Network-RNN"><span class="toc-text">69. 循环神经网络 (Recurrent Neural Network, RNN)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#70-LSTM-GRU-Long-Short-Term-Memory-Gated-Recurrent-Unit"><span class="toc-text">70. LSTM&#x2F;GRU (Long Short-Term Memory &#x2F; Gated Recurrent Unit)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#71-Transformer"><span class="toc-text">71. Transformer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#72-Q-Learning"><span class="toc-text">72. Q-Learning</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#73-Agent-Based-Modeling-ABM"><span class="toc-text">73. Agent-Based Modeling (ABM)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E4%B8%8E%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B-Graph-Network-Models"><span class="toc-text">图与网络模型 (Graph &amp; Network Models)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#74-Dijkstra%E7%AE%97%E6%B3%95"><span class="toc-text">74. Dijkstra算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#75-Floyd-Warshall%E7%AE%97%E6%B3%95"><span class="toc-text">75. Floyd-Warshall算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#76-A-%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95-A-Search-Algorithm"><span class="toc-text">76. A* 搜索算法 (A* Search Algorithm)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#77-Prim-Kruskal%E7%AE%97%E6%B3%95"><span class="toc-text">77. Prim&#x2F;Kruskal算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#78-PageRank%E7%AE%97%E6%B3%95"><span class="toc-text">78. PageRank算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#79-%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B0%E7%AE%97%E6%B3%95-Community-Detection"><span class="toc-text">79. 社区发现算法 (Community Detection)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#80-%E7%BD%91%E7%BB%9C%E4%B8%AD%E5%BF%83%E6%80%A7%E5%88%86%E6%9E%90-Network-Centrality"><span class="toc-text">80. 网络中心性分析 (Network Centrality)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#81-PERT-CPM-%E9%A1%B9%E7%9B%AE%E8%AF%84%E4%BC%B0%E4%B8%8E%E5%AE%A1%E6%9F%A5%E6%8A%80%E6%9C%AF-%E5%85%B3%E9%94%AE%E8%B7%AF%E5%BE%84%E6%B3%95"><span class="toc-text">81. PERT&#x2F;CPM (项目评估与审查技术&#x2F;关键路径法)</span></a></li></ol></li></ol></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.33.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

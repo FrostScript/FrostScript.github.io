@@ -2,215 +2,197 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>无重复字符的最长子串 - 算法演示</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
   <style>
-    body{font-family: "Microsoft YaHei", Arial; background:#f7fbff; color:#123; padding:18px}
-    h1{font-size:20px}
-    .row{display:flex; gap:18px; align-items:flex-start}
-    .box{background:#fff; border-radius:10px; padding:12px; box-shadow:0 6px 18px rgba(20,60,90,0.06);}
-    .left{flex:0 0 420px}
-    .right{flex:1}
-    .control{display:flex; flex-direction:column; gap:8px}
-    label{font-size:13px}
-    input[type=text]{width:100%; padding:6px; border:1px solid #ddd; border-radius:4px}
-    input[type=range]{width:100%}
-    .btn{padding:8px 12px; border-radius:8px; border:0; background:#2b77ff; color:#fff; cursor:pointer; margin-right:6px; margin-bottom:6px}
-    .btn.secondary{background:#6c6c6c}
-    .highlight{background:linear-gradient(90deg,#fff7c2,#ffe3a3); padding:4px 6px; border-radius:6px}
-    .tooltip{position:fixed; pointer-events:none; background:rgba(0,0,0,0.8); color:#fff; padding:8px 10px; border-radius:6px; font-size:13px; max-width:260px}
-    .step-list{display:flex; flex-direction:column; gap:8px}
-    .step{padding:8px; border-radius:8px; background:#fbfdff; border:1px solid #e6f2ff}
-    .step.active{border-color:#ffd27a; box-shadow:0 6px 18px rgba(255,190,60,0.12)}
-    .small{font-size:12px; color:#666}
-    .value{font-weight:700}
-    footer{margin-top:12px; font-size:12px; color:#666}
-    .char-box{display:inline-block; width:30px; height:30px; line-height:30px; text-align:center; margin:2px; border:1px solid #ccc; border-radius:4px; background:white}
-    .char-active{background:#2b77ff; color:white}
-    .char-in-temp{background:#e6f2ff}
-    .char-duplicate{background:#ffcccc}
-    .temp-display{margin:10px 0; padding:10px; background:#f8f9fa; border-radius:6px; font-family:monospace}
-    .result-display{font-size:18px; font-weight:bold; margin:10px 0}
-    .explanation{margin-top:15px; padding:10px; background:#f0f7ff; border-radius:6px}
+    .char-box { display: inline-block; width: 30px; height: 30px; line-height: 30px; text-align: center; margin: 2px; border: 1px solid #ccc; border-radius: 4px; transition: all 0.3s; }
+    .char-active { background-color: #0d6efd; color: white; border-color: #0d6efd; transform: scale(1.1); }
+    .char-in-window { background-color: #e9ecef; }
+    [data-theme='dark'] .char-in-window { background-color: #495057; }
+    .char-left-ptr { border-left: 2px solid #dc3545; }
+    .char-right-ptr { border-right: 2px solid #198754; }
+    .highlight { background-color: #fff3cd; padding: .2em .4em; border-radius: .3rem; }
+    [data-theme='dark'] .highlight { color: #000; }
   </style>
 </head>
 <body>
-  <h1>无重复字符的最长子串 - 算法演示</h1>
-  <div class="row">
-    <div class="box left">
-      <div class="control">
-        <label>输入字符串:</label>
-        <input id="inputStr" type="text" value="abcabcbb" placeholder="输入字符串">
-        
-        <div style="display:flex; gap:8px; margin-top:6px">
-          <button id="stepBtn" class="btn">单步执行</button>
-          <button id="runBtn" class="btn secondary">自动运行</button>
-          <button id="resetBtn" class="btn secondary">重置</button>
-        </div>
-
-        <div class="explanation">
-          <div><strong>当前状态:</strong></div>
-          <div>当前子串: <span id="tempDisplay" class="highlight">""</span></div>
-          <div>当前长度: <span id="tempLen" class="highlight">0</span></div>
-          <div>最大长度: <span id="maxLen" class="highlight">0</span></div>
-          <div>当前字符: <span id="currentChar" class="highlight">-</span></div>
-        </div>
-      </div>
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3">最长无重复子串 (滑动窗口)</h1>
+        <a href="." class="btn btn-sm btn-outline-secondary">返回索引</a>
     </div>
-
-    <div class="box right">
-      <div style="display:flex; flex-direction:column">
-        <div>
-          <div><strong>字符串可视化:</strong></div>
-          <div id="stringVisualization" style="margin:10px 0; padding:10px; background:#f8f9fa; border-radius:6px"></div>
-        </div>
-
-        <div class="explanation">
-          <div><strong>算法步骤:</strong></div>
-          <div id="algorithmSteps" style="margin-top:10px">
-            1. 初始化temp为空字符串，temp_ans和ans为0<br>
-            2. 遍历字符串中的每个字符<br>
-            3. 如果字符不在temp中，添加到temp并增加长度<br>
-            4. 如果字符在temp中，从重复字符后一位开始截取temp<br>
-            5. 更新最大长度
+    <p class="text-muted">通过“滑动窗口”技术动态寻找最长的无重复字符子串。</p>
+    <div class="row">
+      <div class="col-lg-5 mb-4">
+        <div class="card h-100">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">控制面板</h5>
+            <div class="mb-3">
+              <label for="inputStr" class="form-label">测试字符串:</label>
+              <input id="inputStr" type="text" class="form-control" value="abcabcbb" placeholder="输入字符串">
+            </div>
+            <div class="d-flex gap-2 mb-3">
+              <button id="stepBtn" class="btn btn-primary">单步</button>
+              <button id="runBtn" class="btn btn-success">自动</button>
+              <button id="resetBtn" class="btn btn-danger">重置</button>
+            </div>
+            <div class="card bg-light flex-grow-1">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">滑动窗口状态</h6>
+                    <p class="mb-1">窗口内容: <span id="windowContent" class="highlight font-monospace">""</span></p>
+                    <p class="mb-1">当前长度: <span id="windowLen" class="highlight">0</span></p>
+                    <p class="mb-1">最大长度: <span id="maxLen" class="highlight">0</span></p>
+                </div>
+            </div>
           </div>
         </div>
-
-        <div class="explanation" style="margin-top:10px">
-          <div><strong>当前操作:</strong></div>
-          <div id="currentOperation">等待输入...</div>
+      </div>
+      <div class="col-lg-7 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">执行过程</h5>
+            <div class="mb-3">
+              <h6>字符串可视化:</h6>
+              <div id="stringVisualization" class="p-3 bg-light rounded font-monospace d-flex align-items-center"></div>
+            </div>
+            <div class="mb-3">
+                <h6>当前操作说明:</h6>
+                <div id="currentOperation" class="alert alert-info" role="alert">准备就绪。</div>
+            </div>
+            <div>
+              <h6>算法思路 (滑动窗口):</h6>
+              <div id="algorithmSteps" class="small text-muted">
+                1. 维护一个“窗口”(子串)，用左右两个指针(L, R)表示它的边界。<br>
+                2. <strong>扩展</strong>: 不断移动右指针R，将新字符纳入窗口。<br>
+                3. <strong>收缩</strong>: 如果新字符在窗口中已存在，就移动左指针L，直到窗口内不再有重复字符。<br>
+                4. 每次扩展后，记录并更新窗口的最大长度。<br>
+                5. 重复此过程，直到右指针R到达字符串末尾。
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
-  <div id="tooltip" class="tooltip" style="display:none"></div>
-
+  
+  <div id="theme-switcher" class="theme-switcher btn btn-light">🌙</div>
+  <script src="../js/theme-switcher.js"></script>
   <script>
     // DOM references
-    const inputStr = document.getElementById('inputStr');
+    const inputStrEl = document.getElementById('inputStr');
     const stepBtn = document.getElementById('stepBtn');
     const runBtn = document.getElementById('runBtn');
     const resetBtn = document.getElementById('resetBtn');
-    const tempDisplay = document.getElementById('tempDisplay');
-    const tempLen = document.getElementById('tempLen');
-    const maxLen = document.getElementById('maxLen');
-    const currentChar = document.getElementById('currentChar');
-    const stringVisualization = document.getElementById('stringVisualization');
-    const currentOperation = document.getElementById('currentOperation');
-    const tooltip = document.getElementById('tooltip');
+    const windowContentEl = document.getElementById('windowContent');
+    const windowLenEl = document.getElementById('windowLen');
+    const maxLenEl = document.getElementById('maxLen');
+    const stringVisualizationEl = document.getElementById('stringVisualization');
+    const currentOperationEl = document.getElementById('currentOperation');
 
     // Algorithm state
     let s = "abcabcbb";
-    let temp = "";
-    let temp_ans = 0;
-    let ans = 0;
-    let currentIndex = 0;
-    let algorithmState = "ready"; // ready, running, paused
+    let left = 0;
+    let right = 0;
+    let maxLength = 0;
+    let charSet = new Set();
+    let isRunning = false;
     let intervalId = null;
 
     function renderString() {
-      stringVisualization.innerHTML = '';
+      stringVisualizationEl.innerHTML = '';
       for (let i = 0; i < s.length; i++) {
         const charBox = document.createElement('span');
         charBox.className = 'char-box';
         charBox.textContent = s[i];
         
-        if (i === currentIndex) {
-          charBox.classList.add('char-active');
-        } else if (temp.includes(s[i]) && i < currentIndex) {
-          charBox.classList.add('char-in-temp');
-        }
+        if (i === right) charBox.classList.add('char-active');
+        if (i >= left && i < right) charBox.classList.add('char-in-window');
+        if (i === left) charBox.classList.add('char-left-ptr');
+        if (i === right) charBox.classList.add('char-right-ptr');
         
-        stringVisualization.appendChild(charBox);
+        stringVisualizationEl.appendChild(charBox);
       }
     }
 
     function updateDisplay() {
-      tempDisplay.textContent = `"${temp}"`;
-      tempLen.textContent = temp_ans;
-      maxLen.textContent = ans;
-      currentChar.textContent = currentIndex < s.length ? s[currentIndex] : '-';
-      renderString();
+        let currentWindow = s.substring(left, right);
+        windowContentEl.textContent = `"${currentWindow}"`;
+        windowLenEl.textContent = currentWindow.length;
+        maxLenEl.textContent = maxLength;
+        renderString();
     }
-
+    
     function resetAlgorithm() {
-      s = inputStr.value || "abcabcbb";
-      temp = "";
-      temp_ans = 0;
-      ans = 0;
-      currentIndex = 0;
-      algorithmState = "ready";
-      currentOperation.textContent = "算法已重置，等待执行...";
-      updateDisplay();
-      
-      if (intervalId) {
+      if (isRunning) {
         clearInterval(intervalId);
-        intervalId = null;
+        isRunning = false;
+        runBtn.textContent = "自动";
       }
+      s = inputStrEl.value || "abcabcbb";
+      left = 0;
+      right = 0;
+      maxLength = 0;
+      charSet.clear();
+      currentOperationEl.textContent = "已重置。点击“单步”或“自动”开始。";
+      currentOperationEl.className = "alert alert-info";
+      updateDisplay();
     }
 
     function stepAlgorithm() {
-      if (currentIndex >= s.length) {
-        currentOperation.textContent = "算法已完成！最长子串长度为: " + ans;
+      if (right >= s.length) {
+        currentOperationEl.textContent = `完成！最长无重复子串的长度是 ${maxLength}。`;
+        currentOperationEl.className = "alert alert-success";
+        if (isRunning) {
+            clearInterval(intervalId);
+            isRunning = false;
+            runBtn.textContent = "自动";
+        }
+        updateDisplay(); // Final render
         return false;
       }
 
-      const currentCharValue = s[currentIndex];
+      const char = s[right];
       
-      if (!temp.includes(currentCharValue)) {
-        // Character not in temp, add it
-        temp += currentCharValue;
-        temp_ans += 1;
-        currentOperation.textContent = `字符 '${currentCharValue}' 不在当前子串 "${temp.slice(0, -1)}" 中，将其添加。当前子串: "${temp}"`;
+      if (!charSet.has(char)) {
+        // Expand window
+        charSet.add(char);
+        currentOperationEl.textContent = `[扩展] 窗口右侧加入新字符'${char}'。窗口内无重复，计算新长度。`;
+        currentOperationEl.className = "alert alert-primary";
+        maxLength = Math.max(maxLength, right - left + 1);
+        right++;
+
       } else {
-        // Character is duplicate, adjust window
-        const dupIndex = temp.indexOf(currentCharValue);
-        temp = temp.slice(dupIndex + 1) + currentCharValue;
-        temp_ans = temp.length;
-        currentOperation.textContent = `字符 '${currentCharValue}' 在当前子串中重复，从重复字符后一位截取并添加当前字符。新子串: "${temp}"`;
+        // Shrink window
+        currentOperationEl.textContent = `[收缩] 字符'${char}'在窗口中已存在。正在从左侧移除字符'${s[left]}'。`;
+        currentOperationEl.className = "alert alert-warning";
+        charSet.delete(s[left]);
+        left++;
       }
       
-      ans = Math.max(ans, temp_ans);
-      currentIndex++;
       updateDisplay();
-      
-      return currentIndex < s.length;
+      return true;
     }
 
     // Event listeners
-    inputStr.addEventListener('change', resetAlgorithm);
-    inputStr.addEventListener('input', resetAlgorithm);
+    inputStrEl.addEventListener('input', resetAlgorithm);
     
     stepBtn.addEventListener('click', () => {
-      if (algorithmState === "ready" || algorithmState === "paused") {
-        stepAlgorithm();
-      }
+      if(isRunning) return;
+      stepAlgorithm();
     });
 
     runBtn.addEventListener('click', () => {
-      if (algorithmState === "running") {
-        // Stop running
-        algorithmState = "paused";
-        runBtn.textContent = "自动运行";
-        if (intervalId) {
-          clearInterval(intervalId);
-          intervalId = null;
-        }
+      if (isRunning) {
+        clearInterval(intervalId);
+        isRunning = false;
+        runBtn.textContent = "自动";
       } else {
-        // Start running
-        algorithmState = "running";
-        runBtn.textContent = "停止运行";
-        
-        intervalId = setInterval(() => {
-          const shouldContinue = stepAlgorithm();
-          if (!shouldContinue) {
-            algorithmState = "ready";
-            runBtn.textContent = "自动运行";
-            clearInterval(intervalId);
-            intervalId = null;
-          }
-        }, 1000);
+        isRunning = true;
+        runBtn.textContent = "停止";
+        stepAlgorithm(); // Run first step immediately
+        intervalId = setInterval(stepAlgorithm, 800);
       }
     });
 
